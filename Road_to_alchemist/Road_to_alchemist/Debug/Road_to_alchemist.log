@@ -1,0 +1,8 @@
+﻿  CraftingTable.cpp
+  Game.cpp
+  IngredientBox.cpp
+  main.cpp
+  Player.cpp
+C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\Player.cpp(334,64): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+  Road_to_alchemist.vcxproj -> C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Debug\Road_to_alchemist.exe
