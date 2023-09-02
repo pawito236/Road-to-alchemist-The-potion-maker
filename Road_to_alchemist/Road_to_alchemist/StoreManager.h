@@ -17,12 +17,16 @@ typedef struct {
 	int bonus; // 0 = no bonus, 1 = add time, 2 = move speed
 	int score;
 
+	bool receiveOrder;
+
 	// global position where customer stand
 	float x;
 	float y;
 
 	float currentX;
 	float currentY;
+	float offsetXProduct;
+	float offsetYProduct;
 	float speed;
 
 	// Bar -> timeLeft of menu
@@ -35,6 +39,10 @@ typedef struct {
 	sf::IntRect rectSourceSprite;
 	sf::Texture textureCustomer;
 	sf::Sprite spriteCustomer;
+
+	// item border
+	sf::Texture textureBorder1;
+	sf::Sprite spriteBorder1;
 
 	// potion -> based on id
 	sf::Texture textureProduct;

@@ -35,13 +35,17 @@ void StoreManager::generateMenu()
 	newMenu.bonus = 0;
 	newMenu.score = 10;
 
-	newMenu.x = 900.f;
-	newMenu.y = 600.f - (150.f * listMenu.size());
+	newMenu.x = 900.f + rand() % 50;
+	newMenu.y = 500.f - (100.f * listMenu.size());
 
 	newMenu.currentX = newMenu.x;
 	newMenu.currentY = 0.f;
+	newMenu.offsetXProduct = 100.f;
+	newMenu.offsetYProduct = 20.f;
 
 	newMenu.speed = 100.f;
+
+	newMenu.receiveOrder = false;
 
 
 	// Set other properties as needed based on your requirements
@@ -82,7 +86,9 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		{
 			revenueItem.bonus = -99;
 			revenueItem.score = 10;
-			listMenu.erase(listMenu.begin() + idx);
+			//listMenu.erase(listMenu.begin() + idx);
+			i.receiveOrder = true;
+			i.y = 720.f;
 
 			printf("Success sell potion id %d order", i.id);
 			break;
@@ -93,7 +99,9 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		{
 			revenueItem.bonus = -99;
 			revenueItem.score = 15;
-			listMenu.erase(listMenu.begin() + idx);
+			//listMenu.erase(listMenu.begin() + idx);
+			i.receiveOrder = true;
+			i.y = 720.f;
 			printf("Success sell potion id %d order", i.id);
 			break;
 		}
@@ -103,7 +111,9 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		{
 			revenueItem.bonus = -99;
 			revenueItem.score = 30;
-			listMenu.erase(listMenu.begin() + idx);
+			//listMenu.erase(listMenu.begin() + idx);
+			i.receiveOrder = true;
+			i.y = 720.f;
 			printf("Success sell potion id %d order", i.id);
 			break;
 		}
@@ -140,7 +150,19 @@ void StoreManager::update()
 	// Update customer positions
 	for (auto& i : this->listMenu)
 	{
-		i.y = 600.f - (150.f * idx);
+		if (i.receiveOrder)
+		{
+			if (i.currentY >= 700.f)
+			{
+				listMenu.erase(listMenu.begin() + idx);
+				printf("Erase customer");
+			}
+		}
+		else
+		{
+			i.y = 500.f - (100.f * idx);
+		}
+		
 		idx++;
 	}
 
@@ -180,11 +202,49 @@ void StoreManager::render(sf::RenderTarget& target)
 	{
 		i.textureCustomer.loadFromFile("image/bearSprites.png");
 		i.spriteCustomer.setTexture(i.textureCustomer);
-		i.rectSourceSprite = sf::IntRect(0, 0, 96, 96);
+		i.rectSourceSprite = sf::IntRect(0, 96, 96, 96);
 		i.spriteCustomer.setTextureRect(i.rectSourceSprite);
 		idx++;
 
 		target.draw(i.spriteCustomer);
+
+		sf::Texture textureProduct;
+		sf::Sprite spriteProduct;
+
+		switch (i.id)
+		{
+		case 0:
+			i.textureProduct.loadFromFile("image/potion1.png");
+			i.spriteProduct.setTexture(i.textureProduct);
+			i.textureBorder1.loadFromFile("image/ItemBorder.png");
+			i.spriteBorder1.setTexture(i.textureBorder1);
+
+			i.spriteProduct.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY+i.offsetYProduct));
+			i.spriteBorder1.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct));
+			break;
+		case 1:
+			i.textureProduct.loadFromFile("image/potion2.png");
+			i.spriteProduct.setTexture(i.textureProduct);
+			i.textureBorder1.loadFromFile("image/ItemBorder.png");
+			i.spriteBorder1.setTexture(i.textureBorder1);
+
+			i.spriteProduct.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct));
+			i.spriteBorder1.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct));
+			break;
+		case 2:
+			i.textureProduct.loadFromFile("image/potion3.png");
+			i.spriteProduct.setTexture(i.textureProduct);
+			i.textureBorder1.loadFromFile("image/ItemBorder.png");
+			i.spriteBorder1.setTexture(i.textureBorder1);
+
+			i.spriteProduct.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct));
+			i.spriteBorder1.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct));
+			break;
+		default:
+			break;
+		}
+		target.draw(i.spriteBorder1);
+		target.draw(i.spriteProduct);
 	}
 
 
