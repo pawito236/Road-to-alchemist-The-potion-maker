@@ -8,6 +8,7 @@
 
 #include "CraftingTable.h"
 #include "IngredientBox.h"
+#include "StoreManager.h"
 
 class Player
 {
@@ -31,6 +32,8 @@ private:
 
 	float movementSpeed;
 
+	std::vector<ListRevenue> revenue;
+
 	void initVariable();
 	void initShape();
 
@@ -49,13 +52,14 @@ public:
 	void takeDamage(const int damage);
 	void gainHealth(const int health);
 
-	void updateInput(std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox);
+	void updateInput(std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager);
 	void updateWindowBoundCollision(const sf::RenderTarget* target);
-	void update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox);
+	void update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager);
 	void render(sf::RenderTarget* target);
 
 	void updateCraftingTableCollision(std::vector<CraftingTable>& craftingTable);
 	void updateIngredientBoxCollision(std::vector<IngredientBox>& ingredientBox);
+	void updateStoreManagerCollision(std::vector<StoreManager>& storeManager);
 
 	void moveHoldingSpriteTowardsPlayer(float offset, float movementSpeed);
 

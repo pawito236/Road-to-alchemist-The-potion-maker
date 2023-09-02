@@ -65,7 +65,7 @@ void Player::gainHealth(const int health)
 	if (this->hp > this->hpMax)
 		this->hp = this->hpMax;
 }
-void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox)
+void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager)
 {
 	// Keyboard input
 	// Left
@@ -106,6 +106,7 @@ void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<
 		else if (this->is_holding)
 		{
 			this->updateCraftingTableCollision(craftingTable);
+			this->updateStoreManagerCollision(storeManager);
 			
 		}
 		this->clockButton.restart();
@@ -205,7 +206,7 @@ void Player::updateCraftingTableCollision(std::vector<CraftingTable>& craftingTa
 						craftingTable[i].listIngredient[1].id = this->holding_obj;
 						this->is_holding = false;
 				}
-				printf("Player put ingredient to TIER1\n");
+				//printf("Player put ingredient to TIER1\n");
 				break;
 			case CraftingTableTypes::TIER2:
 
@@ -243,29 +244,44 @@ void Player::updateIngredientBoxCollision(std::vector<IngredientBox>& ingredient
 			case IngredientBoxTypes::T1_1:
 				this->is_holding = true;
 				this->holding_obj = T1_1;
-				printf("Player pickup %d\n", this->holding_obj);
+				//printf("Player pickup %d\n", this->holding_obj);
 				break;
 			case IngredientBoxTypes::T1_2:
 				this->is_holding = true;
 				this->holding_obj = T1_2;
-				printf("Player pickup %d\n", this->holding_obj);
+				//printf("Player pickup %d\n", this->holding_obj);
 				break;
 			case IngredientBoxTypes::T1_3:
 				this->is_holding = true;
 				this->holding_obj = T1_3;
-				printf("Player pickup %d\n", this->holding_obj);
+				//printf("Player pickup %d\n", this->holding_obj);
 				break;
 			case IngredientBoxTypes::T1_4:
 				this->is_holding = true;
 				this->holding_obj = T1_4;
-				printf("Player pickup %d\n", this->holding_obj);
+				//printf("Player pickup %d\n", this->holding_obj);
 				break;
 			case IngredientBoxTypes::T2_1:
 				this->is_holding = true;
 				this->holding_obj = T2_1;
-				printf("Player pickup %d\n", this->holding_obj);
+				//printf("Player pickup %d\n", this->holding_obj);
 				break;
 			}
+		}
+	}
+}
+
+
+void Player::updateStoreManagerCollision(std::vector<StoreManager>& storeManager)
+{
+	for (size_t i = 0; i < storeManager.size(); i++)
+	{
+		if (this->sprite.getGlobalBounds().intersects(storeManager[i].getSprite().getGlobalBounds()))
+		{
+			printf("Place Order\n");
+			revenue = storeManager[i].placeMenu(this->holding_obj);
+			printf("Get %d score and %d buff\n", revenue[0].score, revenue[0].bonus);
+			this->is_holding = false;
 		}
 	}
 }
@@ -327,9 +343,9 @@ const sf::Sprite& Player::getSprite() const
 	return this->sprite;
 }
 
-void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox)
+void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager)
 {
-	this->updateInput(craftingTable, ingredientBox);
+	this->updateInput(craftingTable, ingredientBox, storeManager);
 
 	this->moveHoldingSpriteTowardsPlayer(32.f, this->movementSpeed*0.9);
 

@@ -64,6 +64,8 @@ void Game::spawnMapItem()
 	this->ingredientBox.push_back(IngredientBox(4, 400.f, 200.f));
 	this->ingredientBox.push_back(IngredientBox(5, 400.f, 300.f));
 
+	this->storeManager.push_back(StoreManager(600.f, 100.f));
+
 }
 
 void Game::update()
@@ -87,12 +89,17 @@ void Game::update()
 		{
 			i.update();
 		}
+
+		for (auto& i : this->storeManager)
+		{
+			i.update();
+		}
 	}
 }
 
 void Game::updatePlayer()
 {
-	this->player.update(this->window, this->craftingTable, this->ingredientBox);
+	this->player.update(this->window, this->craftingTable, this->ingredientBox, this->storeManager);
 
 
 	if (this->player.getHp() <= 0)
@@ -117,6 +124,12 @@ void Game::render()
 	{
 		i.render(*this->window);
 	}
+
+	for (auto& i : this->storeManager)
+	{
+		i.render(*this->window);
+	}
+
 	this->player.render(this->window);
 
 

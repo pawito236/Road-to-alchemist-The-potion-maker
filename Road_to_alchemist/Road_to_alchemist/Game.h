@@ -9,6 +9,8 @@
 #include "Player.h"
 #include "CraftingTable.h"
 #include "IngredientBox.h"
+#include "StoreManager.h"
+
 #include <iostream>
 #include <ctime>
 
@@ -38,6 +40,8 @@ private:
 public:
 	std::vector<CraftingTable> craftingTable;
 	std::vector<IngredientBox> ingredientBox;
+
+	std::vector<StoreManager> storeManager;
 
 	//Constructors and Destructor
 	Game();

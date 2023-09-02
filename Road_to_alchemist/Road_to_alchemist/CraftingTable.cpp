@@ -135,9 +135,9 @@ void CraftingTable::update()
 		float deltaTime = clockcraftingTime.restart().asSeconds();
 		elapsedTime += deltaTime;
 
-		printf("elapsedTime %f", elapsedTime);
+		//printf("elapsedTime %f", elapsedTime);
 
-		if (elapsedTime > 5.0f)
+		if (elapsedTime > this->craftingTime)
 		{
 			printf("Finish Timer Craft");
 			this->combinationStatus = false;
@@ -409,15 +409,15 @@ void CraftingTable::render(sf::RenderTarget& target)
 
 		// Calculate the percentage of elapsedTime relative to craftingTime
 		float percentageComplete = this->elapsedTime / this->craftingTime;
-		printf("this->elapsedTime / this->craftingTime : %f / %f\n", this->elapsedTime, this->craftingTime);
-		printf("percentageComplete : %f\n", percentageComplete);
+		//printf("this->elapsedTime / this->craftingTime : %f / %f\n", this->elapsedTime, this->craftingTime);
+		//printf("percentageComplete : %f\n", percentageComplete);
 
 		// Ensure that the percentage is clamped between 0 and 1
 		percentageComplete = std::min(std::max(percentageComplete, 0.f), 1.f);
 
 		// Set the rectBar width based on the percentage
 		this->rectBar.width = static_cast<int>(percentageComplete * this->maxWidthBar);
-		printf("rectBar.width : %d\n", rectBar.width);
+		//printf("rectBar.width : %d\n", rectBar.width);
 
 		this->spriteBar.setTextureRect(this->rectBar);
 
