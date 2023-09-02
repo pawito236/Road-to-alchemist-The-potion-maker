@@ -17,6 +17,8 @@ private:
 	int hp;
 	int hpMax;
 
+
+
 	bool is_holding;
 	int holding_obj;
 
@@ -47,6 +49,9 @@ public:
 	const int& getHp() const;
 	const int& getHpMax() const;
 
+	int statusReputation;
+	int statusBonus;
+
 
 	//Function
 	void takeDamage(const int damage);
@@ -65,4 +70,7 @@ public:
 
 	void callStartCrafting(std::vector<CraftingTable>& craftingTable);
 	void callGetProduct(std::vector<CraftingTable>& craftingTable);
+
+	int getReputation();
+	void resetReputation();
 };

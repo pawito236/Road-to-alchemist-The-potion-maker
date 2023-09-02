@@ -3,6 +3,7 @@
 void Game::initVariable()
 {
 	this->endGame = false;
+	reputation = 0;
 }
 
 void Game::initWindow()
@@ -14,12 +15,31 @@ void Game::initWindow()
 	this->window = new sf::RenderWindow(this->videoMode, "Game 2", sf::Style::Close | sf::Style::Titlebar);
 }
 
+void Game::initFont()
+{
+	if (!this->font.loadFromFile("font/PixellettersFull.ttf"))
+	{
+		std::cout << "! Error::Game::INITFONT::COULD NOT LOAD PixellettersFull.ttf" << "\n";
+	}
+}
+
+void Game::initText()
+{
+	//Gui text init
+	this->reputationText.setFont(this->font);
+	this->reputationText.setFillColor(sf::Color::White);
+	this->reputationText.setCharacterSize(32);
+	this->reputationText.setString("text");
+}
+
 //Construvtors and Destructor
 Game::Game()
 {
 
 	this->initVariable();
 	this->initWindow();
+	initFont();
+	initText();
 	this->window->setFramerateLimit(60);
 
 
@@ -77,8 +97,9 @@ void Game::update()
 
 		this->updatePlayer();
 
+
 		//this->updateCollision();
-		//this->updateGui();
+		this->updateGui();
 
 		for (auto& i : this->craftingTable)
 		{
@@ -106,9 +127,27 @@ void Game::updatePlayer()
 	{
 		this->endGame = true;
 	}
+
+	if (player.getReputation() != 0)
+	{
+		reputation = reputation + player.getReputation();
+		player.resetReputation();
+	}
 }
 
+void Game::updateGui()
+{
+	std::stringstream ss;
 
+	ss << "Reputation : " << this->reputation << "\n";
+
+	this->reputationText.setString(ss.str());
+}
+
+void Game::renderGui(sf::RenderTarget* target)
+{
+	target->draw(this->reputationText);
+}
 
 void Game::render()
 {
@@ -131,6 +170,7 @@ void Game::render()
 	}
 
 	this->player.render(this->window);
+	renderGui(this->window);
 
 
 	this->window->display();

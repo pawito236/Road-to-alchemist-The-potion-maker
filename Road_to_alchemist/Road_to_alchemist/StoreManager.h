@@ -18,8 +18,12 @@ typedef struct {
 	int score;
 
 	// global position where customer stand
-	int x;
-	int y;
+	float x;
+	float y;
+
+	float currentX;
+	float currentY;
+	float speed;
 
 	// Bar -> timeLeft of menu
 	int maxWidthBar;
@@ -28,6 +32,7 @@ typedef struct {
 	sf::Sprite spriteBar;
 
 	// Customer of 3 types based on bonus
+	sf::IntRect rectSourceSprite;
 	sf::Texture textureCustomer;
 	sf::Sprite spriteCustomer;
 

@@ -31,10 +31,14 @@ private:
 
 	Player player;
 
-	
+	int reputation;
+	sf::Font font;
+	sf::Text reputationText;
 
 	void initVariable();
 	void initWindow();
+	void initFont();
+	void initText();
 
 
 public:
@@ -58,6 +62,9 @@ public:
 	void updatePlayer();
 	void update();
 	bool running();
+
+	void updateGui();
+	void renderGui(sf::RenderTarget* target);
 
 	void render();
 };

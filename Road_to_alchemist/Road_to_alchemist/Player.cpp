@@ -8,6 +8,8 @@ void Player::initVariable()
 
 	this->is_holding = false;
 	this->holding_obj = 0;
+
+	statusReputation = 0;
 }
 
 void Player::initShape()
@@ -282,6 +284,11 @@ void Player::updateStoreManagerCollision(std::vector<StoreManager>& storeManager
 			revenue = storeManager[i].placeMenu(this->holding_obj);
 			printf("Get %d score and %d buff\n", revenue[0].score, revenue[0].bonus);
 			this->is_holding = false;
+
+			if (revenue[0].score != -99)
+			{
+				statusReputation = statusReputation + revenue[0].score;
+			}
 		}
 	}
 }
@@ -341,6 +348,16 @@ const sf::RectangleShape& Player::getShape() const
 const sf::Sprite& Player::getSprite() const
 {
 	return this->sprite;
+}
+
+int Player::getReputation()
+{
+	return statusReputation;
+}
+
+void Player::resetReputation()
+{
+	statusReputation = 0;
 }
 
 void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager)
