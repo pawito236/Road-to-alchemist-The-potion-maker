@@ -408,7 +408,7 @@ void CraftingTable::render(sf::RenderTarget& target)
 		this->spriteBar.setTexture(this->textureBar);
 
 		// Calculate the percentage of elapsedTime relative to craftingTime
-		float percentageComplete = this->elapsedTime / this->craftingTime;
+		float percentageComplete = this->elapsedTime / this->craftingTime; // 3 /5
 		//printf("this->elapsedTime / this->craftingTime : %f / %f\n", this->elapsedTime, this->craftingTime);
 		//printf("percentageComplete : %f\n", percentageComplete);
 

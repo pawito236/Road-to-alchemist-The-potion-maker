@@ -77,6 +77,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 	revenueItem.bonus = -99;
 	revenueItem.score = -99;
 
+	bool isPlaced = false;
 	int idx = 0;
 
 	for (auto& i : this->listMenu)
@@ -90,6 +91,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 			i.receiveOrder = true;
 			i.y = 720.f;
 
+			isPlaced = true;
 			printf("Success sell potion id %d order", i.id);
 			break;
 		}
@@ -102,6 +104,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
+			isPlaced = true;
 			printf("Success sell potion id %d order", i.id);
 			break;
 		}
@@ -114,6 +117,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
+			isPlaced = true;
 			printf("Success sell potion id %d order", i.id);
 			break;
 		}
@@ -121,6 +125,14 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		idx++;
 	}
 	revenue.push_back(revenueItem);
+
+	if (isPlaced == true)
+	{
+		for (auto& i : this->listMenu)
+		{
+			i.isMoving = true;
+		}
+	}
 
 	return revenue;
 }
@@ -145,6 +157,7 @@ void StoreManager::update()
 		}
 		this->elapsedTime = 0.f;
 	}
+	bool isErase = false;
 
 	int idx = 0;
 	// Update customer positions
@@ -152,10 +165,11 @@ void StoreManager::update()
 	{
 		if (i.receiveOrder)
 		{
-			if (i.currentY >= 700.f)
+			if (i.currentY >= 600.f)
 			{
 				listMenu.erase(listMenu.begin() + idx);
 				printf("Erase customer");
+				isErase = true;
 			}
 		}
 		else
@@ -166,32 +180,49 @@ void StoreManager::update()
 		idx++;
 	}
 
+	if (isErase == true)
+	{
+
+		for (auto& i : this->listMenu)
+		{
+			i.y = 500.f - (100.f * idx);
+
+			i.isMoving = true;
+		}
+	}
+
+
 	for (auto& i : this->listMenu)
 	{
-		// Calculate the direction vector from current position to target position
-		sf::Vector2f direction(i.x - i.currentX, i.y - i.currentY);
-
-		// Calculate the distance to move in this frame based on speed and deltaTime
-		float distanceToMove = i.speed * deltaTime;
-		//printf("distance %f, %f by %f", direction.x, direction.y, distanceToMove);
-
-		// If the distance remaining to the target is less than distanceToMove,
-		// set the position to the target directly; otherwise, move by distanceToMove.
-		if (direction.x * direction.x + direction.y * direction.y < distanceToMove * distanceToMove)
+		if (i.isMoving)
 		{
-			i.currentX = i.x;
-			i.currentY = i.y;
-		}
-		else
-		{
-			direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
-			i.currentX += direction.x * distanceToMove;
-			i.currentY += direction.y * distanceToMove;
+			// Calculate the direction vector from current position to target position
+			sf::Vector2f direction(i.x - i.currentX, i.y - i.currentY);
+
+			// Calculate the distance to move in this frame based on speed and deltaTime
+			float distanceToMove = i.speed * deltaTime;
+			//printf("distance %f, %f by %f", direction.x, direction.y, distanceToMove);
+
+			// If the distance remaining to the target is less than distanceToMove,
+			// set the position to the target directly; otherwise, move by distanceToMove.
+			if (direction.x * direction.x + direction.y * direction.y < distanceToMove * distanceToMove)
+			{
+				i.currentX = i.x;
+				i.currentY = i.y;
+				i.isMoving = false;
+			}
+			else
+			{
+				direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
+				i.currentX += direction.x * distanceToMove;
+				i.currentY += direction.y * distanceToMove;
+			}
+
+			//printf("Position x: %f, y: %f\n-------------\n", i.currentX, i.currentY);
+
+			i.spriteCustomer.setPosition(i.currentX, i.currentY);
 		}
 
-		//printf("Position x: %f, y: %f\n-------------\n", i.currentX, i.currentY);
-
-		i.spriteCustomer.setPosition(i.currentX, i.currentY);
 	}
 }
 

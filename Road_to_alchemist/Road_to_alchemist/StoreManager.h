@@ -17,6 +17,8 @@ typedef struct {
 	int bonus; // 0 = no bonus, 1 = add time, 2 = move speed
 	int score;
 
+	bool isMoving;
+
 	bool receiveOrder;
 
 	// global position where customer stand
