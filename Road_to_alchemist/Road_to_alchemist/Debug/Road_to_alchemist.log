@@ -1,4 +1,4 @@
 ﻿  StoreManager.cpp
 C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(6,34): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(152,23): warning C4018: '<': signed/unsigned mismatch
+C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(153,23): warning C4018: '<': signed/unsigned mismatch
   Road_to_alchemist.vcxproj -> C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Debug\Road_to_alchemist.exe

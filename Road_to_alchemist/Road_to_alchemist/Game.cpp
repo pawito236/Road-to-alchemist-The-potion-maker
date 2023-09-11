@@ -40,7 +40,7 @@ Game::Game()
 	this->initWindow();
 	initFont();
 	initText();
-	this->window->setFramerateLimit(30);
+	this->window->setFramerateLimit(60);
 
 
 	this->spawnMapItem();

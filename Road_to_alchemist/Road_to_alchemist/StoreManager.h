@@ -20,6 +20,7 @@ typedef struct {
 	bool isMoving;
 
 	bool receiveOrder;
+	bool isWait;
 
 	// global position where customer stand
 	float x;
@@ -75,6 +76,7 @@ private:
 	sf::Clock clock;
 	sf::IntRect rectSourceSprite;
 
+	sf::Clock clockMenu;
 	std::vector<ListMenu> listMenu;
 
 	void initShape(float x, float y);

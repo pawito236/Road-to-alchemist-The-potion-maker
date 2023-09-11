@@ -3,7 +3,7 @@
 void StoreManager::initVariable()
 {
 	this->maxMenu = 3;
-	this->nextMenuTime = rand() % 2 + 2;
+	this->nextMenuTime = rand() % 2 + 10;
 }
 
 void StoreManager::initShape(float x, float y)
@@ -30,8 +30,8 @@ void StoreManager::generateMenu()
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 0.0f;
-	newMenu.timeLeft = 0.0f;
+	newMenu.craftingTime = 10.0f;
+	newMenu.timeLeft = newMenu.craftingTime;
 	newMenu.bonus = 0;
 	newMenu.score = 10;
 
@@ -46,6 +46,7 @@ void StoreManager::generateMenu()
 	newMenu.speed = 100.f;
 
 	newMenu.receiveOrder = false;
+	newMenu.isWait = true;
 
 
 	// Set other properties as needed based on your requirements
@@ -160,6 +161,8 @@ void StoreManager::update()
 	bool isErase = false;
 
 	int idx = 0;
+	float elaspTime = clockMenu.getElapsedTime().asSeconds();
+	clockMenu.restart();
 	// Update customer positions
 	for (auto& i : this->listMenu)
 	{
@@ -172,9 +175,21 @@ void StoreManager::update()
 				isErase = true;
 			}
 		}
-		else
+		else if(i.isWait == true)
 		{
 			i.y = 500.f - (100.f * idx);
+		}
+
+		// Error - clock update but error -> customer won't leave
+		i.timeLeft = i.timeLeft - elaspTime;
+		
+		printf("%d : %f\n", idx, i.timeLeft);
+		if (i.timeLeft <= 0 && i.receiveOrder == false)
+		{
+			i.isWait = false;
+			i.receiveOrder = true;
+			i.isMoving = true;
+			i.y = 720.f;
 		}
 		
 		idx++;
