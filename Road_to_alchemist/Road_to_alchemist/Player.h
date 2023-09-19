@@ -33,6 +33,10 @@ private:
 	sf::Clock clockButton;
 
 	float movementSpeed;
+	float defaultSpeed;
+	float currentSpeed;
+	sf::Clock bonusTimer;
+	float bonusTime;
 
 	std::vector<ListRevenue> revenue;
 
@@ -70,6 +74,8 @@ public:
 
 	void callStartCrafting(std::vector<CraftingTable>& craftingTable);
 	void callGetProduct(std::vector<CraftingTable>& craftingTable);
+
+	void receiveBonus(float bonusMoveSpeed, float bonusDuration);
 
 	int getReputation();
 	int getBonus();

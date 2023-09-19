@@ -3,6 +3,12 @@
 void Player::initVariable()
 {
 	this->movementSpeed = 5.f;
+
+	defaultSpeed = 5.f;
+	currentSpeed = defaultSpeed;
+	bonusTime = 0.0f; // Initialize bonus time to zero
+
+
 	this->hpMax = 10;
 	this->hp = hpMax;
 
@@ -73,14 +79,14 @@ void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<
 	// Left
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		this->sprite.move(-this->movementSpeed, 0.f);
+		this->sprite.move(-this->currentSpeed, 0.f);
 		// Set the sprite facing left
 		this->sprite.setOrigin(0.f, 0.f); 
 		this->sprite.setScale(1.f, 1.f);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		this->sprite.move(this->movementSpeed, 0.f);
+		this->sprite.move(this->currentSpeed, 0.f);
 		// Set the sprite facing right
 		this->sprite.setOrigin(96.f, 0.f);
 		this->sprite.setScale(-1.f, 1.f);
@@ -88,11 +94,11 @@ void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		this->sprite.move(0.f, -this->movementSpeed);
+		this->sprite.move(0.f, -this->currentSpeed);
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		this->sprite.move(0.f, this->movementSpeed);
+		this->sprite.move(0.f, this->currentSpeed);
 	}
 
 
@@ -314,7 +320,7 @@ void Player::updateWindowBoundCollision(const sf::RenderTarget* target)
 		this->sprite.setPosition(this->sprite.getGlobalBounds().left, target->getSize().y - this->sprite.getGlobalBounds().height);
 }
 
-void Player::moveHoldingSpriteTowardsPlayer(float offset, float movementSpeed)
+void Player::moveHoldingSpriteTowardsPlayer(float offset, float currentSpeed)
 {
 	sf::Vector2f playerPosition = this->sprite.getPosition();
 	sf::Vector2f holdingPosition = this->spriteHolding.getPosition();
@@ -334,7 +340,7 @@ void Player::moveHoldingSpriteTowardsPlayer(float offset, float movementSpeed)
 	}
 
 	// Multiply the normalized direction vector by the movement speed to control velocity
-	sf::Vector2f velocity = direction * movementSpeed;
+	sf::Vector2f velocity = direction * currentSpeed;
 
 	// Update the position of spriteHolding based on the velocity
 	if (distance >= 5.0f)
@@ -342,6 +348,17 @@ void Player::moveHoldingSpriteTowardsPlayer(float offset, float movementSpeed)
 		this->spriteHolding.move(velocity);
 	}
 	
+}
+
+
+void Player::receiveBonus(float bonusMoveSpeed, float bonusDuration)
+{
+	// Add the bonus move speed to the current speed
+	currentSpeed += bonusMoveSpeed;
+
+	// Set the bonus time and start the bonus timer
+	bonusTime = bonusDuration;
+	bonusTimer.restart();
 }
 
 const sf::RectangleShape& Player::getShape() const
@@ -378,10 +395,29 @@ void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& 
 {
 	this->updateInput(craftingTable, ingredientBox, storeManager);
 
-	this->moveHoldingSpriteTowardsPlayer(32.f, this->movementSpeed*0.9);
+	this->moveHoldingSpriteTowardsPlayer(32.f, this->currentSpeed *0.9);
 
 	//window bound collision
 	this->updateWindowBoundCollision(target);
+
+	if (bonusTime > 0.0f)
+	{
+		// Calculate the remaining bonus time
+		float elapsedTime = bonusTimer.getElapsedTime().asSeconds();
+		bonusTimer.restart();
+		bonusTime -= elapsedTime;
+
+		printf("Bonus time left : %f", bonusTime);
+		// Check if the bonus time has expired
+		if (bonusTime <= 0.0f)
+		{
+			// Reset the player's speed to the default speed
+			currentSpeed = defaultSpeed;
+
+			// Ensure bonusTime does not go below zero
+			bonusTime = 0.0f;
+		}
+	}
 
 }
 

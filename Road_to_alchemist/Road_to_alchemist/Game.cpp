@@ -143,6 +143,7 @@ void Game::updatePlayer()
 		{
 		case 1:
 			//player.move += 50.f;
+			player.receiveBonus(2.f, 10.f);
 			break;
 		case 2:
 			for (auto& i : this->storeManager)
