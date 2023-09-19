@@ -18,6 +18,12 @@
 #include <sstream>
 
 
+typedef struct {
+
+	int reputation;
+
+} GameStatus;
+
 class Game
 {
 private:

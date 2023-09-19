@@ -72,5 +72,7 @@ public:
 	void callGetProduct(std::vector<CraftingTable>& craftingTable);
 
 	int getReputation();
+	int getBonus();
 	void resetReputation();
+	void resetBonus();
 };

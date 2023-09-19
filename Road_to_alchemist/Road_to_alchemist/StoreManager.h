@@ -85,12 +85,14 @@ public:
 	StoreManager(float x, float y); // init store position to let player put potion in it
 	~StoreManager();
 
-	void generateMenu(); // generate new menu in random of id and bonus
+	void generateMenu(int reputation); // generate new menu in random of id and bonus
 	std::vector<ListRevenue> placeMenu(int potion); // player called -> send potion
 
 	const sf::Sprite& getSprite() const;
 
-	void update(); // update timer to generateMenu()
+	void addTimeCustomer(float time);
+
+	void update(int reputation); // update timer to generateMenu()
 	void render(sf::RenderTarget& target);
 };
 

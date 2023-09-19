@@ -3,7 +3,8 @@
 void StoreManager::initVariable()
 {
 	this->maxMenu = 3;
-	this->nextMenuTime = rand() % 2 + 10;
+	this->nextMenuTime = (rand() % 5) + 8;
+	this->elapsedTime = nextMenuTime / 2.0;
 }
 
 void StoreManager::initShape(float x, float y)
@@ -22,17 +23,19 @@ StoreManager::~StoreManager()
 
 }
 
-void StoreManager::generateMenu()
+void StoreManager::generateMenu(int reputation)
 {
 	// Create a default-initialized ListMenu object
 	ListMenu newMenu;
 
+	printf("gameStatus : reputation : %d", reputation);
+
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 10.0f;
+	newMenu.craftingTime = 25.0f - (reputation / 10.0);
 	newMenu.timeLeft = newMenu.craftingTime;
-	newMenu.bonus = 0;
+	newMenu.bonus = (rand() % 3);
 	newMenu.score = 10;
 
 	newMenu.x = 900.f + rand() % 50;
@@ -47,6 +50,8 @@ void StoreManager::generateMenu()
 
 	newMenu.receiveOrder = false;
 	newMenu.isWait = true;
+
+	newMenu.maxWidthBar = 50.f;
 
 
 	// Set other properties as needed based on your requirements
@@ -69,24 +74,26 @@ void StoreManager::generateMenu()
 	listMenu[listMenu.size()-1].spriteCustomer.setPosition(listMenu[listMenu.size()-1].currentX, listMenu[listMenu.size()-1].currentY);
 
 }
+
 std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 {
 	std::vector<ListRevenue> revenue;
 
 	ListRevenue revenueItem;
 
-	revenueItem.bonus = -99;
-	revenueItem.score = -99;
+	revenueItem.bonus = 0;
+	revenueItem.score = 0;
 
 	bool isPlaced = false;
 	int idx = 0;
 
 	for (auto& i : this->listMenu)
 	{
+		
 
 		if (i.id == 0 && potion == 8)
 		{
-			revenueItem.bonus = -99;
+			revenueItem.bonus = i.bonus;
 			revenueItem.score = 10;
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
@@ -100,7 +107,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 
 		if (i.id == 1 && potion == 9)
 		{
-			revenueItem.bonus = -99;
+			revenueItem.bonus = i.bonus;
 			revenueItem.score = 15;
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
@@ -113,7 +120,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 
 		if (i.id == 2 && potion == 10)
 		{
-			revenueItem.bonus = -99;
+			revenueItem.bonus = i.bonus;
 			revenueItem.score = 30;
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
@@ -138,12 +145,20 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 	return revenue;
 }
 
+void StoreManager::addTimeCustomer(float time)
+{
+	for (auto& i : this->listMenu)
+	{
+		i.timeLeft += time;
+	}
+}
+
 const sf::Sprite& StoreManager::getSprite() const
 {
 	return this->sprite;
 }
 
-void StoreManager::update()
+void StoreManager::update(int reputation)
 {
 	float deltaTime = this->clock.restart().asSeconds();
 	this->elapsedTime += deltaTime;
@@ -153,7 +168,7 @@ void StoreManager::update()
 		if (listMenu.size() < maxMenu)
 		{
 			printf("\n---- Generate Order ----\n");
-			this->generateMenu();
+			this->generateMenu(reputation);
 			printf("------------------------\n");
 		}
 		this->elapsedTime = 0.f;
@@ -182,8 +197,7 @@ void StoreManager::update()
 
 		// Error - clock update but error -> customer won't leave
 		i.timeLeft = i.timeLeft - elaspTime;
-		
-		printf("%d : %f\n", idx, i.timeLeft);
+
 		if (i.timeLeft <= 0 && i.receiveOrder == false)
 		{
 			i.isWait = false;
@@ -248,7 +262,7 @@ void StoreManager::render(sf::RenderTarget& target)
 	{
 		i.textureCustomer.loadFromFile("image/bearSprites.png");
 		i.spriteCustomer.setTexture(i.textureCustomer);
-		i.rectSourceSprite = sf::IntRect(0, 96, 96, 96);
+		i.rectSourceSprite = sf::IntRect(0, 96 * (i.bonus + 1), 96, 96);
 		i.spriteCustomer.setTextureRect(i.rectSourceSprite);
 		idx++;
 
@@ -291,6 +305,25 @@ void StoreManager::render(sf::RenderTarget& target)
 		}
 		target.draw(i.spriteBorder1);
 		target.draw(i.spriteProduct);
+
+
+		// Calculate the width of the rectBar based on timeLeft and craftingTime
+		float rectBarWidth = (i.timeLeft / i.craftingTime) * i.maxWidthBar;
+
+		// Create a rectangle shape
+		sf::RectangleShape rect;
+
+		// Set the size of the rectangle based on rectBarWidth
+		rect.setSize(sf::Vector2f(rectBarWidth, 10)); // Adjust the height as needed
+
+		// Set the position of the rectangle
+		rect.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct, i.currentY + i.offsetYProduct - 10)); // Adjust the Y position as needed
+
+		// Set the fill color of the rectangle (e.g., green)
+		rect.setFillColor(sf::Color::Green); // Adjust the color as needed
+
+		// Draw the rectangle
+		target.draw(rect);
 	}
 
 

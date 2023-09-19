@@ -285,9 +285,13 @@ void Player::updateStoreManagerCollision(std::vector<StoreManager>& storeManager
 			printf("Get %d score and %d buff\n", revenue[0].score, revenue[0].bonus);
 			this->is_holding = false;
 
-			if (revenue[0].score != -99)
+			if (revenue[0].score != 0)
 			{
 				statusReputation = statusReputation + revenue[0].score;
+			}
+			if (revenue[0].bonus != 0)
+			{
+				statusBonus = revenue[0].bonus;
 			}
 		}
 	}
@@ -355,9 +359,19 @@ int Player::getReputation()
 	return statusReputation;
 }
 
+int Player::getBonus()
+{
+	return statusBonus;
+}
+
 void Player::resetReputation()
 {
 	statusReputation = 0;
+}
+
+void Player::resetBonus()
+{
+	statusBonus = 0;
 }
 
 void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& craftingTable, std::vector<IngredientBox>& ingredientBox, std::vector<StoreManager>& storeManager)

@@ -113,7 +113,7 @@ void Game::update()
 
 		for (auto& i : this->storeManager)
 		{
-			i.update();
+			i.update(reputation);
 		}
 	}
 }
@@ -132,6 +132,27 @@ void Game::updatePlayer()
 	{
 		reputation = reputation + player.getReputation();
 		player.resetReputation();
+	}
+
+	if (player.getBonus() != 0)
+	{
+		int bonus = player.getBonus();
+		player.resetBonus();
+
+		switch (bonus)
+		{
+		case 1:
+			//player.move += 50.f;
+			break;
+		case 2:
+			for (auto& i : this->storeManager)
+			{
+				i.addTimeCustomer(5.f);
+			}
+			break;
+		default:
+			break;
+		}
 	}
 }
 
