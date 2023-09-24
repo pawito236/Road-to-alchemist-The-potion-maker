@@ -101,14 +101,34 @@ void CraftingTable::initVariable()
 	this->combinationStatus = false;
 	this->maxWidthBar = 94;
 	this->craftingTime = 5.0f;
+
+	if (unlock_threshold == 0)
+	{
+		isUnlock = true;
+	}
+	else
+	{
+		isUnlock = false;
+	}
+	
 }
 
-CraftingTable::CraftingTable(int type, float x, float y)
+CraftingTable::CraftingTable(int type, float x, float y, int unlock_threshold)
 	:type(type)
 {
+	this->unlock_threshold = unlock_threshold;
 	//this->type = type;
 	this->initShape(x, y);
 	this->initVariable();
+
+	if (!this->font.loadFromFile("font/PixellettersFull.ttf"))
+	{
+		std::cout << "! Error::Game::INITFONT::COULD NOT LOAD PixellettersFull.ttf" << "\n";
+	}
+	this->reputationText.setFont(this->font);
+	this->reputationText.setFillColor(sf::Color::White);
+	this->reputationText.setCharacterSize(32);
+	this->reputationText.setString("text");
 
 	printf("init crafttime : %f", this->craftingTime);
 }
@@ -128,8 +148,12 @@ const int& CraftingTable::getType() const
 	return this->type;
 }
 
-void CraftingTable::update()
+void CraftingTable::update(int reputation)
 {
+	if (reputation >= unlock_threshold)
+	{
+		isUnlock = true;
+	}
 	if (this->is_crafting == true)
 	{
 		float deltaTime = clockcraftingTime.restart().asSeconds();
@@ -430,10 +454,22 @@ void CraftingTable::render(sf::RenderTarget& target)
 
 	this->sprite.setTexture(this->texture);
 
-	this->textureBorder1.loadFromFile("image/ItemBorder.png");
-	this->textureBorder2.loadFromFile("image/ItemBorder.png");
-	this->spriteBorder1.setTexture(this->textureBorder1);
-	this->spriteBorder2.setTexture(this->textureBorder2);
+	if (isUnlock == true)
+	{
+		this->textureBorder1.loadFromFile("image/ItemBorder.png");
+		this->textureBorder2.loadFromFile("image/ItemBorder.png");
+		this->spriteBorder1.setTexture(this->textureBorder1);
+		this->spriteBorder2.setTexture(this->textureBorder2);
+		this->sprite.setColor(sf::Color::White);
+
+		
+	}
+
+	if (isUnlock == false)
+	{
+		this->sprite.setColor(sf::Color(255, 255, 255, 80));
+	}
+
 
 	target.draw(this->sprite);
 	target.draw(this->shape);
@@ -446,6 +482,33 @@ void CraftingTable::render(sf::RenderTarget& target)
 	
 	target.draw(this->spriteBarBG);
 	target.draw(this->spriteBar);
+
+}
+
+void CraftingTable::renderGui(sf::RenderTarget* target)
+{
+	if (isUnlock == false)
+	{
+		if (!this->font.loadFromFile("font/PixellettersFull.ttf"))
+		{
+			std::cout << "! Error::Game::INITFONT::COULD NOT LOAD PixellettersFull.ttf" << "\n";
+		}
+		this->reputationText.setFont(this->font);
+		this->reputationText.setFillColor(sf::Color::White);
+		this->reputationText.setCharacterSize(16);
+
+		std::stringstream ss;
+		ss << "Reputation >= " << this->unlock_threshold;
+		this->reputationText.setString(ss.str());
+
+		sf::Vector2f textPosition(sprite.getPosition().x-10, sprite.getPosition().y - 30.f); // Adjust the offset (e.g., -20.f) as needed
+
+		// Set the position of the reputationText
+		reputationText.setPosition(textPosition);
+
+		// Render the reputationText
+		target->draw(this->reputationText);
+	}
 }
 
 void CraftingTable::draw(sf::RenderWindow& window)

@@ -6,6 +6,12 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Network.hpp>
 
+#include <iostream>
+#include <ctime>
+
+#include <vector>
+#include <sstream>
+
 enum CraftingTableTypes {TIER1 = 0, TIER2};
 
 typedef struct {
@@ -52,26 +58,35 @@ private:
 	sf::IntRect rectSourceSprite;
 
 
+	sf::Font font;
+	sf::Text reputationText;
+
 	void initShape(float x, float y);
 
 	void initVariable();
 
 public:
-	CraftingTable(int type, float x, float y);
+	bool isUnlock;
+	int unlock_threshold;
+
+	CraftingTable(int type, float x, float y, int unlock_threshold);
 	~CraftingTable();
 
 	//Acesstor
 	const int& getType() const;
 	const sf::Sprite& getSprite() const;
 
-	void update();
+	void update(int reputation);
 	void render(sf::RenderTarget& target);
+	void renderGui(sf::RenderTarget* target);
 
 	bool is_crafting;
 	ListIngredient listIngredient[2] = {
 	{-99},
 	{-99}
 	};
+
+
 	
 
 	void resetCombination();

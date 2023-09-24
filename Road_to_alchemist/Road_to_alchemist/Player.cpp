@@ -196,7 +196,8 @@ void Player::updateCraftingTableCollision(std::vector<CraftingTable>& craftingTa
 	for (size_t i = 0; i < craftingTable.size(); i++)
 	{
 		
-		if (this->sprite.getGlobalBounds().intersects(craftingTable[i].getSprite().getGlobalBounds()))
+		if (this->sprite.getGlobalBounds().intersects(craftingTable[i].getSprite().getGlobalBounds()) &&
+			craftingTable[i].isUnlock == true)
 		{
 			switch (craftingTable[i].getType())
 			{

@@ -96,11 +96,11 @@ void Game::poolEvents()
 
 void Game::spawnMapItem()
 {
-	this->craftingTable.push_back(CraftingTable(1, 130.f, 380.f));
-	this->craftingTable.push_back(CraftingTable(0, 210.f, 235.f));
+	this->craftingTable.push_back(CraftingTable(1, 130.f, 380.f, 0));
+	this->craftingTable.push_back(CraftingTable(0, 210.f, 235.f, 0));
 
-	this->craftingTable.push_back(CraftingTable(1, 285.f, 380.f));
-	this->craftingTable.push_back(CraftingTable(0, 360.f, 235.f));
+	this->craftingTable.push_back(CraftingTable(1, 285.f, 380.f, 10));
+	this->craftingTable.push_back(CraftingTable(0, 360.f, 235.f, 10));
 
 	this->ingredientBox.push_back(IngredientBox(0, 300.f, 100.f)); //yellow
 	this->ingredientBox.push_back(IngredientBox(1, 450.f, 100.f)); //blue
@@ -143,7 +143,7 @@ void Game::update()
 
 		for (auto& i : this->craftingTable)
 		{
-			i.update();
+			i.update(reputation);
 		}
 
 		for (auto& i : this->ingredientBox)
@@ -241,6 +241,7 @@ void Game::render()
 		{
 			//i.draw(*this->window);
 			i.render(*this->window);
+			i.renderGui(this->window);
 		}
 
 		for (auto& i : this->ingredientBox)
