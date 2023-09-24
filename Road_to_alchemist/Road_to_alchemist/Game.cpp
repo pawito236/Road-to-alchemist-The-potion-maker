@@ -69,25 +69,47 @@ void Game::poolEvents()
 			if (this->sfmlEvent.key.code == sf::Keyboard::Escape)
 			{
 				this->window->close();
+
+				craftingTable.clear();
+				ingredientBox.clear();
+				storeManager.clear();
+
+				// Create a new game window and reset game variables
+				initWindow();
+				initFont();
+				initText();
+
+				endGame = false;
+				isMenu = true;
+				isMenu2 = false;
+				isMenu3 = false;
+				reputation = 0;
+
 				break;
 			}
+		case sf::Event::MouseMoved: // Add this case to track mouse movement
+			this->mousePosition = sf::Mouse::getPosition(*this->window);
+			break;
 		}
 	}
 }
 
 void Game::spawnMapItem()
 {
-	this->craftingTable.push_back(CraftingTable(0, 100.f, 100.f));
-	this->craftingTable.push_back(CraftingTable(1, 100.f, 300.f));
+	this->craftingTable.push_back(CraftingTable(1, 130.f, 380.f));
+	this->craftingTable.push_back(CraftingTable(0, 210.f, 235.f));
 
-	this->ingredientBox.push_back(IngredientBox(0, 300.f, 100.f));
-	this->ingredientBox.push_back(IngredientBox(1, 300.f, 200.f));
-	this->ingredientBox.push_back(IngredientBox(2, 300.f, 300.f));
-	this->ingredientBox.push_back(IngredientBox(3, 400.f, 100.f));
-	this->ingredientBox.push_back(IngredientBox(4, 400.f, 200.f));
-	this->ingredientBox.push_back(IngredientBox(5, 400.f, 300.f));
+	this->craftingTable.push_back(CraftingTable(1, 285.f, 380.f));
+	this->craftingTable.push_back(CraftingTable(0, 360.f, 235.f));
 
-	this->storeManager.push_back(StoreManager(600.f, 100.f));
+	this->ingredientBox.push_back(IngredientBox(0, 300.f, 100.f)); //yellow
+	this->ingredientBox.push_back(IngredientBox(1, 450.f, 100.f)); //blue
+	this->ingredientBox.push_back(IngredientBox(2, 600.f, 100.f)); //red
+	this->ingredientBox.push_back(IngredientBox(3, 500.f, 235.f)); //plant
+	this->ingredientBox.push_back(IngredientBox(4, 500.f, 380.f)); //bottle
+	//this->ingredientBox.push_back(IngredientBox(5, 400.f, 300.f));
+
+	this->storeManager.push_back(StoreManager(690.f, 280.f));
 
 }
 
@@ -179,7 +201,8 @@ void Game::updateGui()
 {
 	std::stringstream ss;
 
-	ss << "Reputation : " << this->reputation << "\n";
+	ss << "Reputation: " << this->reputation << "\n";
+	ss << "Mouse Position: (" << this->mousePosition.x << ", " << this->mousePosition.y << ")\n";
 
 	this->reputationText.setString(ss.str());
 }

@@ -31,6 +31,8 @@ private:
 	sf::RenderWindow* window;
 	bool endGame;
 
+	sf::Vector2i mousePosition;
+
 
 	bool isMenu;
 	sf::Texture textureMenu;
