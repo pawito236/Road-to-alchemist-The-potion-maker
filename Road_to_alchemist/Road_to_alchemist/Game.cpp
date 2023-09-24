@@ -3,12 +3,15 @@
 void Game::initVariable()
 {
 	this->endGame = false;
+	isMenu = true;
+	isMenu2 = false;
+	isMenu3 = false;
 	reputation = 0;
 }
 
 void Game::initWindow()
 {
-	this->texture.loadFromFile("image/map.png");
+	this->texture.loadFromFile("image/Map1.png");
 	this->sprite.setTexture(this->texture);
 
 	this->videoMode = sf::VideoMode(1280, 720);
@@ -43,7 +46,7 @@ Game::Game()
 	this->window->setFramerateLimit(60);
 
 
-	this->spawnMapItem();
+	//this->spawnMapItem();
 }
 
 Game::~Game()
@@ -92,7 +95,22 @@ void Game::update()
 {
 	this->poolEvents();
 	
-	if (this->endGame == false)
+	if (isMenu == true)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
+			isMenu = false;
+			this->spawnMapItem();
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
+			isMenu2 = true;
+			isMenu3 = false;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
+			isMenu3 = true;
+			isMenu2 = false;
+		}
+	}
+	else if (this->endGame == false)
 	{
 
 		this->updatePlayer();
@@ -175,25 +193,46 @@ void Game::render()
 {
 	this->window->clear();
 	this->window->draw(this->sprite);
-	for (auto& i : this->craftingTable)
+	if (isMenu == true)
 	{
-		//i.draw(*this->window);
-		i.render(*this->window);
-	}
+		this->textureMenu.loadFromFile("image/MainMenu1.png");
+		this->spriteMenu.setTexture(this->textureMenu);
+		this->window->draw(this->spriteMenu);
 
-	for (auto& i : this->ingredientBox)
+		if (isMenu2)
+		{
+			this->textureMenu2.loadFromFile("image/MainMenu2.png");
+			this->spriteMenu2.setTexture(this->textureMenu2);
+			this->window->draw(this->spriteMenu2);
+		}
+		if (isMenu3)
+		{
+			this->textureMenu3.loadFromFile("image/MainMenu3.png");
+			this->spriteMenu3.setTexture(this->textureMenu3);
+			this->window->draw(this->spriteMenu3);
+		}
+	}
+	else if (endGame == false)
 	{
-		i.render(*this->window);
+		for (auto& i : this->craftingTable)
+		{
+			//i.draw(*this->window);
+			i.render(*this->window);
+		}
+
+		for (auto& i : this->ingredientBox)
+		{
+			i.render(*this->window);
+		}
+
+		for (auto& i : this->storeManager)
+		{
+			i.render(*this->window);
+		}
+
+		this->player.render(this->window);
+		renderGui(this->window);
 	}
-
-	for (auto& i : this->storeManager)
-	{
-		i.render(*this->window);
-	}
-
-	this->player.render(this->window);
-	renderGui(this->window);
-
 
 	this->window->display();
 }
