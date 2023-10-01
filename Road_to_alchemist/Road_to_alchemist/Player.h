@@ -40,8 +40,13 @@ private:
 
 	std::vector<ListRevenue> revenue;
 
+	sf::SoundBuffer bufferPick;
+	sf::Sound soundPick;
+
 	void initVariable();
 	void initShape();
+
+	void initMusic();
 
 public:
 	Player(float x = 100.f, float y = 100.f);

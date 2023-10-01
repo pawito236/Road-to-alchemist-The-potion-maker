@@ -3,8 +3,8 @@
 void StoreManager::initVariable()
 {
 	this->maxMenu = 3;
-	this->nextMenuTime = (rand() % 5) + 8;
-	this->elapsedTime = nextMenuTime / 2.0;
+	this->nextMenuTime = (rand() % 5) + 20;
+	this->elapsedTime = 10;
 }
 
 void StoreManager::initShape(float x, float y)
@@ -12,10 +12,21 @@ void StoreManager::initShape(float x, float y)
 	this->sprite.setPosition(sf::Vector2f(x,y));
 }
 
+void StoreManager::initMusic()
+{
+	if (!bufferCustomer.loadFromFile("sound/customer2.wav")) {
+		std::cout << "! Error::Game::customer" << "\n";
+	}
+
+	soundCustomer.setBuffer(bufferCustomer);
+	
+}
+
 StoreManager::StoreManager(float x, float y)
 {
 	this->initShape(x, y);
 	this->initVariable();
+	initMusic();
 }
 
 StoreManager::~StoreManager()
@@ -25,6 +36,9 @@ StoreManager::~StoreManager()
 
 void StoreManager::generateMenu(int reputation)
 {
+	soundCustomer.setBuffer(bufferCustomer);
+	soundCustomer.play();
+
 	// Create a default-initialized ListMenu object
 	ListMenu newMenu;
 
@@ -33,7 +47,7 @@ void StoreManager::generateMenu(int reputation)
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 35.0f - (reputation / 10.0);
+	newMenu.craftingTime = 38.0f - (reputation / 10.0);
 	newMenu.timeLeft = newMenu.craftingTime;
 	newMenu.bonus = (rand() % 3);
 	newMenu.score = 10;
@@ -163,7 +177,7 @@ void StoreManager::update(int reputation)
 	float deltaTime = this->clock.restart().asSeconds();
 	this->elapsedTime += deltaTime;
 
-	if (this->elapsedTime > this->nextMenuTime)
+	if (this->elapsedTime > (this->nextMenuTime - (reputation / 10.f)))
 	{
 		if (listMenu.size() < maxMenu)
 		{

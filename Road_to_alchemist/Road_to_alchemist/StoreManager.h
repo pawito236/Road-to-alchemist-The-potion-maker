@@ -9,6 +9,12 @@
 #include <vector>
 #include <algorithm>
 
+#include <iostream>
+#include <ctime>
+
+#include <vector>
+#include <sstream>
+#include <cstdio>
 typedef struct {
 	int id; // -99 = null, 
 	int quantity; // number of potion to pass
@@ -79,8 +85,12 @@ private:
 	sf::Clock clockMenu;
 	std::vector<ListMenu> listMenu;
 
+	sf::SoundBuffer bufferCustomer;
+	sf::Sound soundCustomer;
+
 	void initShape(float x, float y);
 	void initVariable();
+	void initMusic();
 public:
 	StoreManager(float x, float y); // init store position to let player put potion in it
 	~StoreManager();

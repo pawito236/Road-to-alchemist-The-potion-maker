@@ -1,10 +1,6 @@
-﻿  Game.cpp
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\Game.cpp(128,12): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'const sf::String'
-  StoreManager.cpp
+﻿  StoreManager.cpp
 C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(6,36): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(7,35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(36,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(54,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(168,23): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(50,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(68,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(182,23): warning C4018: '<': signed/unsigned mismatch
   Road_to_alchemist.vcxproj -> C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Debug\Road_to_alchemist.exe

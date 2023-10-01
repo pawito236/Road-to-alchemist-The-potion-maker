@@ -29,6 +29,16 @@ void Player::initShape()
 	//this->shape.setSize(sf::Vector2f(50.f, 50.f));
 }
 
+void Player::initMusic()
+{
+	if (!bufferPick.loadFromFile("sound/pick.mp3")) {
+		std::cout << "! Error::Game::Pick" << "\n";
+	}
+
+	soundPick.setBuffer(bufferPick);
+	
+}
+
 Player::Player(float x, float y)
 {
 	this->sprite.setPosition(x, y);
@@ -36,6 +46,7 @@ Player::Player(float x, float y)
 
 	this->initVariable();
 	this->initShape();
+	initMusic();
 }
 
 Player::~Player()
@@ -104,6 +115,9 @@ void Player::updateInput(std::vector<CraftingTable>& craftingTable, std::vector<
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && this->clockButton.getElapsedTime().asSeconds() > 0.5f)
 	{
+		soundPick.setBuffer(bufferPick);
+		soundPick.play();
+
 		if (!this->is_holding)
 		{
 			this->callGetProduct(craftingTable);
