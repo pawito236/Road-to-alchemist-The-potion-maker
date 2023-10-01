@@ -63,13 +63,16 @@ private:
 	sf::String input;
 
 
-	sf::SoundBuffer buffer;
+	sf::SoundBuffer bufferCoin;
+	sf::Sound soundCoin;
+	sf::Music backgroundMusic;
 
 	void initVariable();
 	void initWindow();
 	void initFont();
 	void initText();
 
+	void initMusic();
 
 public:
 	std::vector<CraftingTable> craftingTable;

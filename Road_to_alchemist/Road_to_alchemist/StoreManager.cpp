@@ -33,7 +33,7 @@ void StoreManager::generateMenu(int reputation)
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 30.0f - (reputation / 10.0);
+	newMenu.craftingTime = 35.0f - (reputation / 10.0);
 	newMenu.timeLeft = newMenu.craftingTime;
 	newMenu.bonus = (rand() % 3);
 	newMenu.score = 10;

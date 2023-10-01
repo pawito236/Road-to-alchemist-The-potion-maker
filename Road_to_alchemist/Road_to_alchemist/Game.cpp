@@ -40,6 +40,28 @@ void Game::initText()
 	this->playerName.setString("text");
 }
 
+void Game::initMusic()
+{
+	if (!backgroundMusic.openFromFile("sound/lofi1.ogg")) {
+		// Handle the error if loading the music fails
+		std::cout << "! Error::Game::backgroundMusic" << "\n";
+	}
+	// Set the music to loop continuously
+	backgroundMusic.setLoop(true);
+
+	// Play the background music
+	backgroundMusic.play();
+
+
+	if (!bufferCoin.loadFromFile("sound/coin.wav")) {
+		std::cout << "! Error::Game::bufferCoin" << "\n";
+	}
+
+	soundCoin.setBuffer(bufferCoin);
+	soundCoin.play();
+
+}
+
 //Construvtors and Destructor
 Game::Game()
 {
@@ -48,7 +70,8 @@ Game::Game()
 	this->initWindow();
 	initFont();
 	initText();
-	this->window->setFramerateLimit(60);
+	initMusic();
+	this->window->setFramerateLimit(30);
 
 
 	//this->spawnMapItem();
@@ -75,6 +98,11 @@ void Game::poolEvents()
 		case sf::Event::KeyPressed:
 			if (this->sfmlEvent.key.code == sf::Keyboard::Escape)
 			{
+
+				sf::Sound sound;
+				sound.setBuffer(bufferCoin);
+				sound.play();
+
 				this->window->close();
 
 				craftingTable.clear();
@@ -247,14 +275,24 @@ void Game::update()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J)) {
 			isMenu = false;
 			this->spawnMapItem();
+
+			soundCoin.setBuffer(bufferCoin);
+			soundCoin.play();
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
 			isMenu2 = true;
 			isMenu3 = false;
+
+			soundCoin.setBuffer(bufferCoin);
+			soundCoin.play();
+
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L)) {
 			isMenu3 = true;
 			isMenu2 = false;
+
+			soundCoin.setBuffer(bufferCoin);
+			soundCoin.play();
 		}
 	}
 	else if (this->endGame == false)
@@ -280,7 +318,7 @@ void Game::update()
 		{
 			i.update(reputation);
 		}
-		if (reputation >= 10)
+		if (reputation >= 100)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -304,6 +342,9 @@ void Game::updatePlayer()
 
 	if (player.getReputation() != 0)
 	{
+		soundCoin.setBuffer(bufferCoin);
+		soundCoin.play();
+
 		reputation = reputation + player.getReputation();
 		player.resetReputation();
 	}
