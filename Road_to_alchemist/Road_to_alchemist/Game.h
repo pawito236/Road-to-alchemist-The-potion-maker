@@ -1,4 +1,5 @@
 #pragma once
+#define _CRT_SECURE_NO_DEPRECATE
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -17,6 +18,14 @@
 #include <vector>
 #include <sstream>
 #include <cstdio>
+
+#include <fstream>
+#include <algorithm>
+
+struct PlayerData {
+	std::string name;
+	int reputation;
+};
 
 typedef struct {
 
@@ -62,6 +71,8 @@ private:
 	sf::Text playerName;
 	sf::String input;
 
+	sf::Text leaderboardText;
+
 
 	sf::SoundBuffer bufferCoin;
 	sf::Sound soundCoin;
@@ -89,6 +100,8 @@ public:
 
 	//Modifier
 	std::string getPlayerName();
+	bool compareByReputation(const PlayerData& a, const PlayerData& b);
+	void DisplyLeaderBoard();
 
 	//Function
 	void poolEvents();

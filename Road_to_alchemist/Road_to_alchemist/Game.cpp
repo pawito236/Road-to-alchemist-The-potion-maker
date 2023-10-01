@@ -38,6 +38,11 @@ void Game::initText()
 	this->playerName.setFillColor(sf::Color::White);
 	this->playerName.setCharacterSize(32);
 	this->playerName.setString("text");
+
+	leaderboardText.setFont(font);
+	leaderboardText.setFillColor(sf::Color::Black);
+	leaderboardText.setCharacterSize(40);
+	leaderboardText.setPosition(250.f, 250.f);
 }
 
 void Game::initMusic()
@@ -120,6 +125,20 @@ void Game::poolEvents()
 				isMenu3 = false;
 				reputation = 0;
 
+				FILE* file = fopen("player_data.txt", "a");
+
+				if (file == NULL) {
+					printf("File open error");
+				}
+				else
+				{
+					fprintf(file, "%s %d\n", "anonymous", reputation);
+
+					fclose(file);
+
+					printf("save successful player_data.txt\n");
+				}
+
 				break;
 			}
 			else if (this->sfmlEvent.key.code == sf::Keyboard::Enter && endGame == true)
@@ -138,25 +157,6 @@ void Game::poolEvents()
 					{
 						// finished entering name
 						printf("Finish name");
-
-
-						/*
-												FILE* file = fopen("player_data.txt", "w");
-
-						if (file == NULL) {
-							printf("File open error");
-						}
-						else
-						{
-							fprintf(file, "%d\n", reputation);
-
-							fclose(file);
-
-							printf("save successful player_data.txt\n");
-						}
-						*/
-
-
 
 						this->window->close();
 
@@ -293,6 +293,8 @@ void Game::update()
 
 			soundCoin.setBuffer(bufferCoin);
 			soundCoin.play();
+
+			DisplyLeaderBoard();
 		}
 	}
 	else if (this->endGame == false)
@@ -372,6 +374,50 @@ void Game::updatePlayer()
 	}
 }
 
+bool Game::compareByReputation(const PlayerData& a, const PlayerData& b) {
+	return a.reputation > b.reputation;
+}
+
+void Game::DisplyLeaderBoard()
+{
+	std::vector<PlayerData> playersList;
+
+	// Read data from the file
+	std::ifstream inputFile("player_data.txt");
+	if (!inputFile.is_open()) {
+		std::cerr << "Error: Could not open player_data.txt" << std::endl;
+	}
+
+	std::string line;
+	while (std::getline(inputFile, line)) {
+		PlayerData playerData;
+		std::istringstream iss(line);
+		iss >> playerData.name >> playerData.reputation;
+		playersList.push_back(playerData);
+	}
+
+	inputFile.close();
+
+	// Sort the data by reputation in descending order
+	//std::sort(playersList.begin(), playersList.end(), compareByReputation);
+
+	// Print the sorted data
+	std::cout << "Players sorted by reputation:" << std::endl;
+	for (const PlayerData& playerData : playersList) {
+		std::cout << "Name: " << playerData.name << ", Reputation: " << playerData.reputation << std::endl;
+	}
+
+	// Prepare the leaderboard text
+	std::string leaderboardTextStr = "";
+
+	for (const PlayerData& playerData : playersList) {
+		leaderboardTextStr += "Name: " + playerData.name + ", Reputation: " + std::to_string(playerData.reputation) + "\n";
+	}
+
+	leaderboardText.setString(leaderboardTextStr);
+}
+
+
 void Game::updateGui()
 {
 	std::stringstream ss;
@@ -408,6 +454,8 @@ void Game::render()
 			this->textureMenu3.loadFromFile("image/MainMenu3.png");
 			this->spriteMenu3.setTexture(this->textureMenu3);
 			this->window->draw(this->spriteMenu3);
+
+			this->window->draw(leaderboardText);
 		}
 	}
 	else if (endGame == false)
