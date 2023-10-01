@@ -33,6 +33,11 @@ void Game::initText()
 	this->reputationText.setFillColor(sf::Color::White);
 	this->reputationText.setCharacterSize(32);
 	this->reputationText.setString("text");
+
+	this->playerName.setFont(this->font);
+	this->playerName.setFillColor(sf::Color::White);
+	this->playerName.setCharacterSize(32);
+	this->playerName.setString("text");
 }
 
 //Construvtors and Destructor
@@ -58,6 +63,8 @@ Game::~Game()
 //Function
 void Game::poolEvents()
 {
+	// https://gamedev.net/forums/topic/633951-using-sfml20-to-input-a-name/4997764/
+
 	while (this->window->pollEvent(sfmlEvent))
 	{
 		switch (this->sfmlEvent.type)
@@ -87,6 +94,72 @@ void Game::poolEvents()
 
 				break;
 			}
+			else if (this->sfmlEvent.key.code == sf::Keyboard::Enter && endGame == true)
+			{
+				//std::string playerName = input.toAnsiString();
+				printf("Player Name: %s\n", playerName.getString());
+				break;
+			}
+		case sf::Event::TextEntered:
+			if (endGame == true)
+			{
+				if (sfmlEvent.text.unicode < 128)
+				{
+					std::string name = playerName.getString();
+					if (sfmlEvent.text.unicode == 13) // return key
+					{
+						// finished entering name
+						printf("Finish name");
+
+
+						/*
+												FILE* file = fopen("player_data.txt", "w");
+
+						if (file == NULL) {
+							printf("File open error");
+						}
+						else
+						{
+							fprintf(file, "%d\n", reputation);
+
+							fclose(file);
+
+							printf("save successful player_data.txt\n");
+						}
+						*/
+
+
+
+						this->window->close();
+
+						craftingTable.clear();
+						ingredientBox.clear();
+						storeManager.clear();
+
+						// Create a new game window and reset game variables
+						initWindow();
+						initFont();
+						initText();
+
+						endGame = false;
+						isMenu = true;
+						isMenu2 = false;
+						isMenu3 = false;
+						reputation = 0;
+
+
+					}
+					else if (sfmlEvent.text.unicode == 8) { // backspace
+						if (name.size() > 0) name.resize(name.size() - 1);
+					}
+					else {
+						//name += static_cast<char>(sfmlEvent.text.unicode);
+						sf::Utf8::encode(sfmlEvent.text.unicode, std::back_inserter(name));
+					}
+					playerName.setString(name);
+				}
+			}
+			break;
 		case sf::Event::MouseMoved: // Add this case to track mouse movement
 			this->mousePosition = sf::Mouse::getPosition(*this->window);
 			break;
@@ -111,6 +184,58 @@ void Game::spawnMapItem()
 
 	this->storeManager.push_back(StoreManager(690.f, 280.f));
 
+}
+
+std::string Game::getPlayerName()
+{
+	sf::String input;
+	sf::Text text;
+	sf::Font font;
+
+	// Load a font for displaying text input
+	if (!font.loadFromFile("font/PixellettersFull.ttf")) {
+		std::cerr << "Error: Could not load font." << std::endl;
+		return "";
+	}
+
+	text.setFont(font);
+	text.setCharacterSize(24);
+	text.setFillColor(sf::Color::White);
+
+	while (this->window->isOpen()) {
+		sf::Event event;
+		while (this->window->pollEvent(event)) {
+			if (event.type == sf::Event::TextEntered) {
+				if (event.text.unicode == '\b' && !input.isEmpty()) {
+					// Handle backspace
+					input.erase(input.getSize() - 1, 1);
+				}
+				else if (event.text.unicode < 128) {
+					// Handle regular text input
+					input += event.text.unicode;
+				}
+			}
+			else if (event.type == sf::Event::KeyPressed) {
+				if (event.key.code == sf::Keyboard::Enter) {
+					// Player pressed Enter, so return the captured name
+					return input.toAnsiString();
+				}
+			}
+			else if (event.type == sf::Event::Closed) {
+				// Handle window close event
+				this->window->close();
+				return "";
+			}
+		}
+
+		// Display the input text
+		text.setString(input);
+		this->window->clear();
+		this->window->draw(text);
+		this->window->display();
+	}
+
+	return "";
 }
 
 void Game::update()
@@ -155,6 +280,15 @@ void Game::update()
 		{
 			i.update(reputation);
 		}
+		if (reputation >= 10)
+		{
+			printf("\nYou Been promoted to alchemist !!!\n");
+			endGame = true;
+		}
+	}
+	else if (endGame == true)
+	{
+		// do sth
 	}
 }
 
@@ -256,6 +390,14 @@ void Game::render()
 
 		this->player.render(this->window);
 		renderGui(this->window);
+	}
+	else if (endGame == true)
+	{
+		this->textureMenu4.loadFromFile("image/MainMenu-end.png");
+		this->spriteMenu4.setTexture(this->textureMenu4);
+		this->window->draw(this->spriteMenu4);
+
+		this->window->draw(playerName);
 	}
 
 	this->window->display();

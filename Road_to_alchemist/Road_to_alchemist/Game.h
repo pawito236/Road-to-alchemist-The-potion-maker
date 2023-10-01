@@ -16,7 +16,7 @@
 
 #include <vector>
 #include <sstream>
-
+#include <cstdio>
 
 typedef struct {
 
@@ -44,6 +44,10 @@ private:
 	sf::Texture textureMenu3;
 	sf::Sprite spriteMenu3;
 
+	bool isMenu4; // Enter Name
+	sf::Texture textureMenu4;
+	sf::Sprite spriteMenu4;
+
 	sf::Event sfmlEvent;
 
 	sf::Texture texture;
@@ -54,6 +58,12 @@ private:
 	int reputation;
 	sf::Font font;
 	sf::Text reputationText;
+
+	sf::Text playerName;
+	sf::String input;
+
+
+	sf::SoundBuffer buffer;
 
 	void initVariable();
 	void initWindow();
@@ -75,6 +85,7 @@ public:
 
 
 	//Modifier
+	std::string getPlayerName();
 
 	//Function
 	void poolEvents();
