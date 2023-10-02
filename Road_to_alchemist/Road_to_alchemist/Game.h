@@ -102,6 +102,8 @@ public:
 	std::string getPlayerName();
 	bool compareByReputation(const PlayerData& a, const PlayerData& b);
 	void DisplyLeaderBoard();
+	void saveData();
+	void restartGame();
 
 	//Function
 	void poolEvents();

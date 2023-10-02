@@ -108,36 +108,9 @@ void Game::poolEvents()
 				sound.setBuffer(bufferCoin);
 				sound.play();
 
-				this->window->close();
+				restartGame();
 
-				craftingTable.clear();
-				ingredientBox.clear();
-				storeManager.clear();
-
-				// Create a new game window and reset game variables
-				initWindow();
-				initFont();
-				initText();
-
-				endGame = false;
-				isMenu = true;
-				isMenu2 = false;
-				isMenu3 = false;
-				reputation = 0;
-
-				FILE* file = fopen("player_data.txt", "a");
-
-				if (file == NULL) {
-					printf("File open error");
-				}
-				else
-				{
-					fprintf(file, "%s %d\n", "anonymous", reputation);
-
-					fclose(file);
-
-					printf("save successful player_data.txt\n");
-				}
+				saveData();
 
 				break;
 			}
@@ -158,22 +131,9 @@ void Game::poolEvents()
 						// finished entering name
 						printf("Finish name");
 
-						this->window->close();
+						restartGame();
 
-						craftingTable.clear();
-						ingredientBox.clear();
-						storeManager.clear();
-
-						// Create a new game window and reset game variables
-						initWindow();
-						initFont();
-						initText();
-
-						endGame = false;
-						isMenu = true;
-						isMenu2 = false;
-						isMenu3 = false;
-						reputation = 0;
+						saveData();
 
 
 					}
@@ -320,7 +280,7 @@ void Game::update()
 		{
 			i.update(reputation);
 		}
-		if (reputation >= 100)
+		if (reputation >= 20)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -417,6 +377,42 @@ void Game::DisplyLeaderBoard()
 	leaderboardText.setString(leaderboardTextStr);
 }
 
+void Game::saveData()
+{
+	FILE* file = fopen("player_data.txt", "a");
+
+	if (file == NULL) {
+		printf("File open error");
+	}
+	else
+	{
+		fprintf(file, "%s %d\n", "anonymous", reputation);
+
+		fclose(file);
+
+		printf("save successful player_data.txt\n");
+	}
+}
+
+void Game::restartGame()
+{
+	this->window->close();
+
+	craftingTable.clear();
+	ingredientBox.clear();
+	storeManager.clear();
+
+	// Create a new game window and reset game variables
+	initWindow();
+	initFont();
+	initText();
+
+	endGame = false;
+	isMenu = true;
+	isMenu2 = false;
+	isMenu3 = false;
+	reputation = 0;
+}
 
 void Game::updateGui()
 {
