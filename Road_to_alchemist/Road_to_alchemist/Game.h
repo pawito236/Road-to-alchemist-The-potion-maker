@@ -71,6 +71,10 @@ private:
 	sf::Text playerName;
 	sf::String input;
 
+	std::string playerNameBuffer = "";
+	std::string inputBuffer = "";
+	sf::Text inputText;
+
 	sf::Text leaderboardText;
 
 
@@ -104,6 +108,7 @@ public:
 	void DisplyLeaderBoard();
 	void saveData();
 	void restartGame();
+	void inputPlayerName();
 
 	//Function
 	void poolEvents();

@@ -1,3 +1,4 @@
 ﻿  Game.cpp
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\Game.cpp(147,12): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'const sf::String'
+  main.cpp
+  Generating Code...
   Road_to_alchemist.vcxproj -> C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Debug\Road_to_alchemist.exe

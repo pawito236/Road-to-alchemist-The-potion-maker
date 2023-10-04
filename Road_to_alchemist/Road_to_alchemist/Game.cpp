@@ -36,8 +36,9 @@ void Game::initText()
 
 	this->playerName.setFont(this->font);
 	this->playerName.setFillColor(sf::Color::White);
-	this->playerName.setCharacterSize(32);
-	this->playerName.setString("text");
+	this->playerName.setCharacterSize(40);
+	this->playerName.setString("");
+	playerName.setPosition(250.f, 250.f);
 
 	leaderboardText.setFont(font);
 	leaderboardText.setFillColor(sf::Color::Black);
@@ -108,43 +109,43 @@ void Game::poolEvents()
 				sound.setBuffer(bufferCoin);
 				sound.play();
 
-				restartGame();
+				inputBuffer = "";
 
 				saveData();
+				restartGame();
+
 
 				break;
 			}
 			else if (this->sfmlEvent.key.code == sf::Keyboard::Enter && endGame == true)
 			{
 				//std::string playerName = input.toAnsiString();
-				printf("Player Name: %s\n", playerName.getString());
+				//printf("Player Name: %s\n", playerName.getString());
+				inputBuffer = "";
 				break;
 			}
+			break;
 		case sf::Event::TextEntered:
 			if (endGame == true)
 			{
 				if (sfmlEvent.text.unicode < 128)
 				{
-					std::string name = playerName.getString();
-					if (sfmlEvent.text.unicode == 13) // return key
+					if (sfmlEvent.text.unicode == 13)
 					{
-						// finished entering name
-						printf("Finish name");
-
-						restartGame();
+						inputBuffer = "";
 
 						saveData();
+						restartGame();
+					}
+					else
+					{
+						printf("unicode : %d", sfmlEvent.text.unicode);
+						inputBuffer += static_cast<char>(sfmlEvent.text.unicode);
+						printf("\nName : %s\n", inputBuffer.c_str());
+						playerName.setString(inputBuffer.c_str());
+						playerNameBuffer = inputBuffer;
+					}
 
-
-					}
-					else if (sfmlEvent.text.unicode == 8) { // backspace
-						if (name.size() > 0) name.resize(name.size() - 1);
-					}
-					else {
-						//name += static_cast<char>(sfmlEvent.text.unicode);
-						sf::Utf8::encode(sfmlEvent.text.unicode, std::back_inserter(name));
-					}
-					playerName.setString(name);
 				}
 			}
 			break;
@@ -280,7 +281,7 @@ void Game::update()
 		{
 			i.update(reputation);
 		}
-		if (reputation >= 20)
+		if (reputation >= 0)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -379,20 +380,26 @@ void Game::DisplyLeaderBoard()
 
 void Game::saveData()
 {
-	FILE* file = fopen("player_data.txt", "a");
+	FILE* file = fopen("player_data.txt", "w");
 
 	if (file == NULL) {
 		printf("File open error");
 	}
 	else
 	{
-		fprintf(file, "%s %d\n", "anonymous", reputation);
+		fprintf(file, "%s %d\n", playerNameBuffer.c_str(), reputation);
+		//fprintf(file, "%s %d\n", "anonymous", reputation);
 
 		fclose(file);
 
 		printf("save successful player_data.txt\n");
 	}
 }
+void Game::inputPlayerName()
+{
+
+}
+
 
 void Game::restartGame()
 {
