@@ -1,11 +1,2 @@
 ﻿  Game.cpp
-  Player.cpp
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\Player.cpp(418,64): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-  StoreManager.cpp
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(6,36): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(60,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(78,24): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Road_to_alchemist\StoreManager.cpp(192,23): warning C4018: '<': signed/unsigned mismatch
-  main.cpp
-  Generating Code...
   Road_to_alchemist.vcxproj -> C:\Users\home\OneDrive\Documents\Road-to-alchemist-The-potion-maker\Road_to_alchemist\Debug\Road_to_alchemist.exe

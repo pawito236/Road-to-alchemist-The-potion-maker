@@ -328,11 +328,11 @@ void Game::updatePlayer()
 
 		switch (bonus)
 		{
-		case 1:
+		case 1: // move speed
 			//player.move += 50.f;
 			player.receiveBonus(2.f, 10.f);
 			break;
-		case 2:
+		case 2: //add time
 			for (auto& i : this->storeManager)
 			{
 				i.addTimeCustomer(5.f);
@@ -469,7 +469,7 @@ void Game::render()
 
 		if (isMenu2)
 		{
-			this->textureMenu2.loadFromFile("image/MainMenu2-2.png");
+			this->textureMenu2.loadFromFile("image/MainMenu2-3.png");
 			this->spriteMenu2.setTexture(this->textureMenu2);
 			this->window->draw(this->spriteMenu2);
 		}
