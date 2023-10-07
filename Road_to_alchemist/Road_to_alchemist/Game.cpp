@@ -11,7 +11,7 @@ void Game::initVariable()
 
 void Game::initWindow()
 {
-	this->texture.loadFromFile("image/Map1.png");
+	this->texture.loadFromFile("image/Map2.png");
 	this->sprite.setTexture(this->texture);
 
 	this->videoMode = sf::VideoMode(1280, 720);
@@ -111,10 +111,16 @@ void Game::poolEvents()
 
 				inputBuffer = "";
 
+				/*
 				saveData();
 				restartGame();
+				*/
 
-
+				if (isMenu == false)
+				{
+					endGame = true;
+				}
+				
 				break;
 			}
 			else if (this->sfmlEvent.key.code == sf::Keyboard::Enter && endGame == true)
@@ -281,7 +287,7 @@ void Game::update()
 		{
 			i.update(reputation);
 		}
-		if (reputation >= 0)
+		if (reputation >= 30)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -362,6 +368,10 @@ void Game::DisplyLeaderBoard()
 	// Sort the data by reputation in descending order
 	//std::sort(playersList.begin(), playersList.end(), compareByReputation);
 
+	std::sort(playersList.begin(), playersList.end(), [](const PlayerData& a, const PlayerData& b) {
+		return a.reputation > b.reputation;
+	});
+
 	// Print the sorted data
 	std::cout << "Players sorted by reputation:" << std::endl;
 	for (const PlayerData& playerData : playersList) {
@@ -371,8 +381,16 @@ void Game::DisplyLeaderBoard()
 	// Prepare the leaderboard text
 	std::string leaderboardTextStr = "";
 
+	int i = 0;
+
 	for (const PlayerData& playerData : playersList) {
 		leaderboardTextStr += "Name: " + playerData.name + ", Reputation: " + std::to_string(playerData.reputation) + "\n";
+		i++;
+		if (i == 5)
+		{
+			i = 0;
+			break;
+		}
 	}
 
 	leaderboardText.setString(leaderboardTextStr);
@@ -380,7 +398,7 @@ void Game::DisplyLeaderBoard()
 
 void Game::saveData()
 {
-	FILE* file = fopen("player_data.txt", "w");
+	FILE* file = fopen("player_data.txt", "a");
 
 	if (file == NULL) {
 		printf("File open error");
@@ -448,7 +466,7 @@ void Game::render()
 
 		if (isMenu2)
 		{
-			this->textureMenu2.loadFromFile("image/MainMenu2.png");
+			this->textureMenu2.loadFromFile("image/MainMenu2-2.png");
 			this->spriteMenu2.setTexture(this->textureMenu2);
 			this->window->draw(this->spriteMenu2);
 		}

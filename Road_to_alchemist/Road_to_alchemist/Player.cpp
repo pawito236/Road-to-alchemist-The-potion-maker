@@ -340,7 +340,8 @@ void Player::moveHoldingSpriteTowardsPlayer(float offset, float currentSpeed)
 	sf::Vector2f playerPosition = this->sprite.getPosition();
 	sf::Vector2f holdingPosition = this->spriteHolding.getPosition();
 
-	// Calculate the direction vector from holdingPosition to playerPosition with offset
+	/*
+		// Calculate the direction vector from holdingPosition to playerPosition with offset
 	sf::Vector2f direction = playerPosition - (holdingPosition + sf::Vector2f(-0.45f * this->sprite.getGlobalBounds().width, offset));
 
 	// Calculate the distance between holdingPosition and playerPosition with offset
@@ -362,6 +363,10 @@ void Player::moveHoldingSpriteTowardsPlayer(float offset, float currentSpeed)
 	{
 		this->spriteHolding.move(velocity);
 	}
+	*/
+
+
+	spriteHolding.setPosition(playerPosition.x, playerPosition.y-15.f);
 	
 }
 

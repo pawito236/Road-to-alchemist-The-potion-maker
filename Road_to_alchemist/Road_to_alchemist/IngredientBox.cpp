@@ -48,6 +48,8 @@ void IngredientBox::initShape(float x, float y)
 			y
 		)
 	);
+
+	this->sprite.setScale(sf::Vector2f(1.25f, 1.25f));
 }
 
 IngredientBox::IngredientBox(int type, float x, float y)
