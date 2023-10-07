@@ -286,6 +286,9 @@ void Game::update()
 		for (auto& i : this->storeManager)
 		{
 			i.update(reputation);
+
+			reputation = reputation + i.getPenalty();
+			i.resetPenalty();
 		}
 		if (reputation >= 30)
 		{

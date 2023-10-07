@@ -57,6 +57,7 @@ typedef struct {
 	sf::Texture textureProduct;
 	sf::Sprite spriteProduct;
 
+	
 
 } ListMenu;
 
@@ -88,12 +89,17 @@ private:
 	sf::SoundBuffer bufferCustomer;
 	sf::Sound soundCustomer;
 
+	int penalty;
+
 	void initShape(float x, float y);
 	void initVariable();
 	void initMusic();
 public:
 	StoreManager(float x, float y); // init store position to let player put potion in it
 	~StoreManager();
+
+	int getPenalty();
+	void resetPenalty();
 
 	void generateMenu(int reputation); // generate new menu in random of id and bonus
 	std::vector<ListRevenue> placeMenu(int potion); // player called -> send potion

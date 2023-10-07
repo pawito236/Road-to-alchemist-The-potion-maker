@@ -8,3 +8,4 @@ wish 0
 kkk 0
 pawit 30
 wwww 35
+paw -20

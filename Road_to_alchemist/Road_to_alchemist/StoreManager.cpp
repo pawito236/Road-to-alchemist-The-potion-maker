@@ -5,6 +5,7 @@ void StoreManager::initVariable()
 	this->maxMenu = 3;
 	this->nextMenuTime = (rand() % 5) + 20;
 	this->elapsedTime = 10;
+	penalty = 0;
 }
 
 void StoreManager::initShape(float x, float y)
@@ -32,6 +33,15 @@ StoreManager::StoreManager(float x, float y)
 StoreManager::~StoreManager()
 {
 
+}
+int StoreManager::getPenalty()
+{
+	return penalty;
+}
+
+void StoreManager::resetPenalty()
+{
+	penalty = 0;
 }
 
 void StoreManager::generateMenu(int reputation)
@@ -218,6 +228,7 @@ void StoreManager::update(int reputation)
 			i.receiveOrder = true;
 			i.isMoving = true;
 			i.y = 720.f;
+			penalty -= 10;
 		}
 		
 		idx++;
