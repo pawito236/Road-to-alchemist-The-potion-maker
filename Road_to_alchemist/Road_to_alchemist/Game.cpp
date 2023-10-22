@@ -7,6 +7,12 @@ void Game::initVariable()
 	isMenu2 = false;
 	isMenu3 = false;
 	reputation = 0;
+	goal_reputation = 35;
+
+	// Initialize timer
+	startTime = std::chrono::steady_clock::now();
+	elapsedTimeInSeconds = 0;
+	isTiming = true;
 }
 
 void Game::initWindow()
@@ -236,6 +242,13 @@ std::string Game::getPlayerName()
 void Game::update()
 {
 	this->poolEvents();
+
+	if (isTiming) {
+		// Calculate elapsed time in seconds
+		std::chrono::steady_clock::time_point currentTime = std::chrono::steady_clock::now();
+		std::chrono::duration<int> elapsedTime = std::chrono::duration_cast<std::chrono::seconds>(currentTime - startTime);
+		elapsedTimeInSeconds = elapsedTime.count();
+	}
 	
 	if (isMenu == true)
 	{
@@ -245,6 +258,10 @@ void Game::update()
 
 			soundCoin.setBuffer(bufferCoin);
 			soundCoin.play();
+
+			startTime = std::chrono::steady_clock::now();
+			elapsedTimeInSeconds = 0;
+			isTiming = true;
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K)) {
 			isMenu2 = true;
@@ -290,7 +307,7 @@ void Game::update()
 			reputation = reputation + i.getPenalty();
 			i.resetPenalty();
 		}
-		if (reputation >= 30)
+		if (reputation >= goal_reputation)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -446,8 +463,8 @@ void Game::updateGui()
 {
 	std::stringstream ss;
 
-	ss << "Reputation: " << this->reputation << "\n";
-	ss << "Mouse Position: (" << this->mousePosition.x << ", " << this->mousePosition.y << ")\n";
+	ss << "Reputation: " << this->reputation << " / " << goal_reputation << "\n" << "Time : " << elapsedTimeInSeconds;
+	//ss << "Mouse Position: (" << this->mousePosition.x << ", " << this->mousePosition.y << ")\n";
 
 	this->reputationText.setString(ss.str());
 }
@@ -523,3 +540,13 @@ bool Game::running()
 	return this->window->isOpen();
 }
 
+void Game::startTimer()
+{
+	startTime = std::chrono::steady_clock::now();
+	isTiming = true;
+}
+
+void Game::stopTimer()
+{
+	isTiming = false;
+}

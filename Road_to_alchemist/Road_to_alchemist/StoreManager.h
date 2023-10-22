@@ -49,6 +49,8 @@ typedef struct {
 	sf::Texture textureCustomer;
 	sf::Sprite spriteCustomer;
 
+	sf::Clock clock;
+
 	// item border
 	sf::Texture textureBorder1;
 	sf::Sprite spriteBorder1;

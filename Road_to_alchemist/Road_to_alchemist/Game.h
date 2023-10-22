@@ -18,6 +18,7 @@
 #include <vector>
 #include <sstream>
 #include <cstdio>
+#include <chrono>
 
 #include <fstream>
 #include <algorithm>
@@ -82,6 +83,13 @@ private:
 	sf::Sound soundCoin;
 	sf::Music backgroundMusic;
 
+	int goal_reputation;
+
+	// Timer variables
+	std::chrono::steady_clock::time_point startTime;
+	int elapsedTimeInSeconds;
+	bool isTiming;
+
 	void initVariable();
 	void initWindow();
 	void initFont();
@@ -121,5 +129,8 @@ public:
 	void renderGui(sf::RenderTarget* target);
 
 	void render();
+
+	void startTimer();
+	void stopTimer();
 };
 

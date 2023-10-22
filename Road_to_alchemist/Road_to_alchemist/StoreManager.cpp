@@ -4,7 +4,7 @@ void StoreManager::initVariable()
 {
 	this->maxMenu = 3;
 	this->nextMenuTime = (rand() % 5) + 20;
-	this->elapsedTime = 10;
+	this->elapsedTime = 18;
 	penalty = 0;
 }
 
@@ -76,6 +76,10 @@ void StoreManager::generateMenu(int reputation)
 	newMenu.isWait = true;
 
 	newMenu.maxWidthBar = 50.f;
+
+	sf::Clock clock;
+	newMenu.clock = clock;
+	newMenu.rectSourceSprite = sf::IntRect(0, 96 * (newMenu.bonus + 1), 96, 96);
 
 
 	// Set other properties as needed based on your requirements
@@ -287,9 +291,23 @@ void StoreManager::render(sf::RenderTarget& target)
 	{
 		i.textureCustomer.loadFromFile("image/bearSprites.png");
 		i.spriteCustomer.setTexture(i.textureCustomer);
-		i.rectSourceSprite = sf::IntRect(0, 96 * (i.bonus + 1), 96, 96);
+		//i.rectSourceSprite = sf::IntRect(0, 96 * (i.bonus + 1), 96, 96);
 		i.spriteCustomer.setTextureRect(i.rectSourceSprite);
 		idx++;
+
+		if (i.clock.getElapsedTime().asSeconds() > 0.5f) {
+			printf("shift sprite");
+			if (i.rectSourceSprite.left == 96)
+			{
+				i.rectSourceSprite.left = 0;
+			}
+			else
+			{
+				i.rectSourceSprite.left += 96;
+			}
+			i.spriteCustomer.setTextureRect(i.rectSourceSprite);
+			i.clock.restart();
+		}
 
 		target.draw(i.spriteCustomer);
 
