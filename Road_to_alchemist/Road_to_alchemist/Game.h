@@ -89,6 +89,7 @@ private:
 	std::chrono::steady_clock::time_point startTime;
 	int elapsedTimeInSeconds;
 	bool isTiming;
+	int maxTime;
 
 	void initVariable();
 	void initWindow();

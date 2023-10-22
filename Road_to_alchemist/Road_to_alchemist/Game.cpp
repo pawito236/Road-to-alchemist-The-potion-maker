@@ -7,12 +7,14 @@ void Game::initVariable()
 	isMenu2 = false;
 	isMenu3 = false;
 	reputation = 0;
-	goal_reputation = 35;
+	goal_reputation = 999;
 
 	// Initialize timer
 	startTime = std::chrono::steady_clock::now();
 	elapsedTimeInSeconds = 0;
 	isTiming = true;
+	maxTime = 300;
+
 }
 
 void Game::initWindow()
@@ -44,7 +46,7 @@ void Game::initText()
 	this->playerName.setFillColor(sf::Color::White);
 	this->playerName.setCharacterSize(40);
 	this->playerName.setString("");
-	playerName.setPosition(250.f, 250.f);
+	playerName.setPosition(250.f, 280.f);
 
 	leaderboardText.setFont(font);
 	leaderboardText.setFillColor(sf::Color::Black);
@@ -307,7 +309,7 @@ void Game::update()
 			reputation = reputation + i.getPenalty();
 			i.resetPenalty();
 		}
-		if (reputation >= goal_reputation)
+		if (reputation >= goal_reputation || elapsedTimeInSeconds >= maxTime)
 		{
 			printf("\nYou Been promoted to alchemist !!!\n");
 			endGame = true;
@@ -463,7 +465,7 @@ void Game::updateGui()
 {
 	std::stringstream ss;
 
-	ss << "Reputation: " << this->reputation << " / " << goal_reputation << "\n" << "Time : " << elapsedTimeInSeconds;
+	ss << "Reputation: " << this->reputation << " / " << goal_reputation << "\n" << "Time : " << maxTime - elapsedTimeInSeconds;
 	//ss << "Mouse Position: (" << this->mousePosition.x << ", " << this->mousePosition.y << ")\n";
 
 	this->reputationText.setString(ss.str());
