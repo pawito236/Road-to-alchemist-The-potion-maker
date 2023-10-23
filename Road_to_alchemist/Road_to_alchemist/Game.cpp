@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 void Game::initVariable()
 {
@@ -19,7 +19,7 @@ void Game::initVariable()
 
 void Game::initWindow()
 {
-	this->texture.loadFromFile("image/Map2.png");
+	this->texture.loadFromFile("image/Map2-6.png");
 	this->sprite.setTexture(this->texture);
 
 	this->videoMode = sf::VideoMode(1280, 720);
@@ -38,9 +38,22 @@ void Game::initText()
 {
 	//Gui text init
 	this->reputationText.setFont(this->font);
-	this->reputationText.setFillColor(sf::Color::White);
+	this->reputationText.setFillColor(sf::Color::Black);
 	this->reputationText.setCharacterSize(32);
 	this->reputationText.setString("text");
+	reputationText.setPosition(200.f, 675.f);
+
+	taskText.setFont(this->font);
+	taskText.setFillColor(sf::Color::Black);
+	taskText.setCharacterSize(32);
+	taskText.setString("Task: Sell the most potions within the time.");
+	taskText.setPosition(10.f, 5.f);
+
+	timeText.setFont(this->font);
+	timeText.setFillColor(sf::Color::Black);
+	timeText.setCharacterSize(32);
+	timeText.setString("text");
+	timeText.setPosition(10.f, 675.f);
 
 	this->playerName.setFont(this->font);
 	this->playerName.setFillColor(sf::Color::White);
@@ -465,15 +478,22 @@ void Game::updateGui()
 {
 	std::stringstream ss;
 
-	ss << "Reputation: " << this->reputation << " / " << goal_reputation << "\n" << "Time : " << maxTime - elapsedTimeInSeconds;
+
+	ss << "Reputation: " << this->reputation << " / " << goal_reputation;
 	//ss << "Mouse Position: (" << this->mousePosition.x << ", " << this->mousePosition.y << ")\n";
 
 	this->reputationText.setString(ss.str());
+
+	std::stringstream ss2;
+	ss2 << "Time : " << maxTime - elapsedTimeInSeconds;
+	timeText.setString(ss2.str());
 }
 
 void Game::renderGui(sf::RenderTarget* target)
 {
 	target->draw(this->reputationText);
+	target->draw(timeText);
+	target->draw(taskText);
 }
 
 void Game::render()
@@ -482,13 +502,13 @@ void Game::render()
 	this->window->draw(this->sprite);
 	if (isMenu == true)
 	{
-		this->textureMenu.loadFromFile("image/MainMenu1.png");
+		this->textureMenu.loadFromFile("image/MainMenu1-1.png");
 		this->spriteMenu.setTexture(this->textureMenu);
 		this->window->draw(this->spriteMenu);
 
 		if (isMenu2)
 		{
-			this->textureMenu2.loadFromFile("image/MainMenu2-3.png");
+			this->textureMenu2.loadFromFile("image/MainMenu2-4.png");
 			this->spriteMenu2.setTexture(this->textureMenu2);
 			this->window->draw(this->spriteMenu2);
 		}

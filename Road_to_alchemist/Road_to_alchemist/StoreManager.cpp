@@ -57,7 +57,7 @@ void StoreManager::generateMenu(int reputation)
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 38.0f - (reputation / 10.0);
+	newMenu.craftingTime = 40.0f - (reputation / 15.0);
 	newMenu.timeLeft = newMenu.craftingTime;
 	newMenu.bonus = (rand() % 3);
 	newMenu.score = 10;
@@ -191,7 +191,7 @@ void StoreManager::update(int reputation)
 	float deltaTime = this->clock.restart().asSeconds();
 	this->elapsedTime += deltaTime;
 
-	if (this->elapsedTime > (this->nextMenuTime - (reputation / 10.f)))
+	if (this->elapsedTime > (this->nextMenuTime - (reputation / 15.f)))
 	{
 		if (listMenu.size() < maxMenu)
 		{

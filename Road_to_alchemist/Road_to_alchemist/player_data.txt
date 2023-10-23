@@ -20,3 +20,6 @@ pawit 0
 paworADFDSF 0
 jam 0
 jpawit 190
+pawit125 0
+jakls 10
+pawr 0

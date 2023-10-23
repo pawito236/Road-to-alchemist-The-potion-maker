@@ -69,6 +69,9 @@ private:
 	sf::Font font;
 	sf::Text reputationText;
 
+	sf::Text timeText;
+	sf::Text taskText;
+
 	sf::Text playerName;
 	sf::String input;
 

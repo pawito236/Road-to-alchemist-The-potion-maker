@@ -328,11 +328,11 @@ void Player::updateWindowBoundCollision(const sf::RenderTarget* target)
 		this->sprite.setPosition(target->getSize().x - this->sprite.getGlobalBounds().width, this->sprite.getGlobalBounds().top);
 
 	// Top
-	if (this->sprite.getGlobalBounds().top <= 0.f)
-		this->sprite.setPosition(this->sprite.getGlobalBounds().left, 0.f);
+	if (this->sprite.getGlobalBounds().top <= 55.f)
+		this->sprite.setPosition(this->sprite.getGlobalBounds().left, 55.f);
 	// Bottom
-	if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= target->getSize().y)
-		this->sprite.setPosition(this->sprite.getGlobalBounds().left, target->getSize().y - this->sprite.getGlobalBounds().height);
+	if (this->sprite.getGlobalBounds().top + this->sprite.getGlobalBounds().height >= target->getSize().y -55.f)
+		this->sprite.setPosition(this->sprite.getGlobalBounds().left, target->getSize().y - this->sprite.getGlobalBounds().height -55.f);
 }
 
 void Player::moveHoldingSpriteTowardsPlayer(float offset, float currentSpeed)
