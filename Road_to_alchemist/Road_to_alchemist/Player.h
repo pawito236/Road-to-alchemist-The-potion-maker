@@ -38,6 +38,9 @@ private:
 	sf::Clock bonusTimer;
 	float bonusTime;
 
+	sf::Texture speedTexture;
+	sf::Sprite speedSprite;
+
 	std::vector<ListRevenue> revenue;
 
 	sf::SoundBuffer bufferPick;

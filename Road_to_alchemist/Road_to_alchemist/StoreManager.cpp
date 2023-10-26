@@ -2,8 +2,8 @@
 
 void StoreManager::initVariable()
 {
-	this->maxMenu = 3;
-	this->nextMenuTime = (rand() % 5) + 20;
+	this->maxMenu = 4;
+	this->nextMenuTime = (rand() % 5) + 22;
 	this->elapsedTime = 18;
 	penalty = 0;
 }
@@ -57,10 +57,10 @@ void StoreManager::generateMenu(int reputation)
 	// Set its default parameters
 	newMenu.id = rand() % 3;
 	newMenu.quantity = 0;
-	newMenu.craftingTime = 40.0f - (reputation / 15.0);
-	newMenu.timeLeft = newMenu.craftingTime;
 	newMenu.bonus = (rand() % 3);
-	newMenu.score = 10;
+	newMenu.craftingTime = 46.0f - (reputation / 18.0f) - (newMenu.bonus * 1.0f);
+	newMenu.timeLeft = newMenu.craftingTime;
+	newMenu.score = 20;
 
 	newMenu.x = 900.f + rand() % 50;
 	newMenu.y = 500.f - (100.f * listMenu.size());
@@ -68,7 +68,7 @@ void StoreManager::generateMenu(int reputation)
 	newMenu.currentX = newMenu.x;
 	newMenu.currentY = 0.f;
 	newMenu.offsetXProduct = 100.f;
-	newMenu.offsetYProduct = 20.f;
+	newMenu.offsetYProduct = 25.f;
 
 	newMenu.speed = 100.f;
 
@@ -76,6 +76,8 @@ void StoreManager::generateMenu(int reputation)
 	newMenu.isWait = true;
 
 	newMenu.maxWidthBar = 50.f;
+
+	newMenu.isHappy = true;
 
 	sf::Clock clock;
 	newMenu.clock = clock;
@@ -122,7 +124,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		if (i.id == 0 && potion == 8)
 		{
 			revenueItem.bonus = i.bonus;
-			revenueItem.score = 10;
+			revenueItem.score = 20;
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
@@ -136,7 +138,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		if (i.id == 1 && potion == 9)
 		{
 			revenueItem.bonus = i.bonus;
-			revenueItem.score = 15;
+			revenueItem.score = 25;
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
@@ -178,6 +180,7 @@ void StoreManager::addTimeCustomer(float time)
 	for (auto& i : this->listMenu)
 	{
 		i.timeLeft += time;
+		i.isHappy = true;
 	}
 }
 
@@ -224,6 +227,9 @@ void StoreManager::update(int reputation)
 		}
 
 		// Error - clock update but error -> customer won't leave
+		if (i.isHappy) {
+			elaspTime = elaspTime * 0.8f;
+		}
 		i.timeLeft = i.timeLeft - elaspTime;
 
 		if (i.timeLeft <= 0 && i.receiveOrder == false)
@@ -296,7 +302,7 @@ void StoreManager::render(sf::RenderTarget& target)
 		idx++;
 
 		if (i.clock.getElapsedTime().asSeconds() > 0.5f) {
-			printf("shift sprite");
+			//printf("shift sprite");
 			if (i.rectSourceSprite.left == 96)
 			{
 				i.rectSourceSprite.left = 0;
@@ -367,6 +373,14 @@ void StoreManager::render(sf::RenderTarget& target)
 
 		// Draw the rectangle
 		target.draw(rect);
+
+		if (i.isHappy) {
+			i.textureHappy.loadFromFile("image/smile.png");
+			i.spriteHappy.setTexture(i.textureHappy);
+			i.spriteHappy.setScale(sf::Vector2f(0.04f, 0.04f));
+			i.spriteHappy.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct+32.f, i.currentY + i.offsetYProduct));
+			target.draw(i.spriteHappy);
+		}
 	}
 
 

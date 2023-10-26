@@ -38,6 +38,10 @@ typedef struct {
 	float offsetYProduct;
 	float speed;
 
+	bool isHappy;
+	sf::Texture textureHappy;
+	sf::Sprite spriteHappy;
+
 	// Bar -> timeLeft of menu
 	int maxWidthBar;
 	sf::IntRect rectBar;

@@ -100,7 +100,7 @@ void CraftingTable::initVariable()
 	this->combination_id = -99;
 	this->combinationStatus = false;
 	this->maxWidthBar = 94;
-	this->craftingTime = 5.0f;
+	this->craftingTime = 4.0f;
 
 	if (unlock_threshold == 0)
 	{

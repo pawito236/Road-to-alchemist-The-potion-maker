@@ -81,6 +81,8 @@ private:
 
 	sf::Text leaderboardText;
 
+	sf::Text gradeText;
+
 
 	sf::SoundBuffer bufferCoin;
 	sf::Sound soundCoin;

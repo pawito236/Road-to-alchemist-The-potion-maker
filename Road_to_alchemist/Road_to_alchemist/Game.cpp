@@ -13,7 +13,7 @@ void Game::initVariable()
 	startTime = std::chrono::steady_clock::now();
 	elapsedTimeInSeconds = 0;
 	isTiming = true;
-	maxTime = 300;
+	maxTime = 200;
 
 }
 
@@ -55,11 +55,17 @@ void Game::initText()
 	timeText.setString("text");
 	timeText.setPosition(10.f, 675.f);
 
+	gradeText.setFont(this->font);
+	gradeText.setFillColor(sf::Color::Black);
+	gradeText.setCharacterSize(32);
+	gradeText.setString("");
+	gradeText.setPosition(250.f, 350.f);
+
 	this->playerName.setFont(this->font);
-	this->playerName.setFillColor(sf::Color::White);
-	this->playerName.setCharacterSize(40);
+	this->playerName.setFillColor(sf::Color::Black);
+	this->playerName.setCharacterSize(48);
 	this->playerName.setString("");
-	playerName.setPosition(250.f, 280.f);
+	playerName.setPosition(250.f, 270.f);
 
 	leaderboardText.setFont(font);
 	leaderboardText.setFillColor(sf::Color::Black);
@@ -155,7 +161,7 @@ void Game::poolEvents()
 		case sf::Event::TextEntered:
 			if (endGame == true)
 			{
-				if (sfmlEvent.text.unicode < 128)
+				if (sfmlEvent.text.unicode < 128 && sfmlEvent.text.unicode != 23)
 				{
 					if (sfmlEvent.text.unicode == 13)
 					{
@@ -188,13 +194,13 @@ void Game::spawnMapItem()
 	this->craftingTable.push_back(CraftingTable(1, 130.f, 380.f, 0));
 	this->craftingTable.push_back(CraftingTable(0, 210.f, 235.f, 0));
 
-	this->craftingTable.push_back(CraftingTable(1, 285.f, 380.f, 10));
-	this->craftingTable.push_back(CraftingTable(0, 360.f, 235.f, 10));
+	this->craftingTable.push_back(CraftingTable(1, 285.f, 380.f, 30));
+	this->craftingTable.push_back(CraftingTable(0, 360.f, 235.f, 30));
 
-	this->ingredientBox.push_back(IngredientBox(0, 300.f, 100.f)); //yellow
-	this->ingredientBox.push_back(IngredientBox(1, 450.f, 100.f)); //blue
-	this->ingredientBox.push_back(IngredientBox(2, 600.f, 100.f)); //red
-	this->ingredientBox.push_back(IngredientBox(3, 500.f, 235.f)); //plant
+	this->ingredientBox.push_back(IngredientBox(0, 350.f, 100.f)); //yellow
+	this->ingredientBox.push_back(IngredientBox(1, 500.f, 100.f)); //blue
+	this->ingredientBox.push_back(IngredientBox(2, 200.f, 100.f)); //red
+	this->ingredientBox.push_back(IngredientBox(3, 500.f, 220.f)); //plant
 	this->ingredientBox.push_back(IngredientBox(4, 500.f, 380.f)); //bottle
 	//this->ingredientBox.push_back(IngredientBox(5, 400.f, 300.f));
 
@@ -550,6 +556,30 @@ void Game::render()
 		this->window->draw(this->spriteMenu4);
 
 		this->window->draw(playerName);
+
+		std::stringstream ss;
+		ss << "You Promoted to : ";
+		if (reputation > 150) {
+			ss << "S class";
+		} else if (reputation > 120) {
+			ss << "A+ class";
+		}
+		else if (reputation > 100) {
+			ss << "A class";
+		}
+		else if (reputation > 80) {
+			ss << "B class";
+		}
+		else if (reputation > 60) {
+			ss << "C class";
+		}
+		else {
+			ss << "F class";
+		}
+		ss << " Alchemist";
+		ss << "\nReputation Score : " << reputation;
+		gradeText.setString(ss.str());
+		this->window->draw(gradeText);
 	}
 
 	this->window->display();

@@ -5,7 +5,7 @@ void Player::initVariable()
 	this->movementSpeed = 5.f;
 
 	defaultSpeed = 5.f;
-	currentSpeed = defaultSpeed;
+	currentSpeed = defaultSpeed + 1.f;
 	bonusTime = 0.0f; // Initialize bonus time to zero
 
 
@@ -24,6 +24,10 @@ void Player::initShape()
 	this->sprite.setTexture(texture);
 	this->rectSourceSprite = sf::IntRect(0, 0, 96, 96);
 	this->sprite.setTextureRect(rectSourceSprite);
+
+	speedTexture.loadFromFile("image/movespeed.png");
+	speedSprite.setTexture(speedTexture);
+	speedSprite.setScale(0.1f, 0.1f);
 
 	//this->spriteHolding.setColor(sf::Color::Green);
 	//this->shape.setSize(sf::Vector2f(50.f, 50.f));
@@ -301,9 +305,9 @@ void Player::updateStoreManagerCollision(std::vector<StoreManager>& storeManager
 	{
 		if (this->sprite.getGlobalBounds().intersects(storeManager[i].getSprite().getGlobalBounds()))
 		{
-			printf("Place Order\n");
+			//printf("Place Order\n");
 			revenue = storeManager[i].placeMenu(this->holding_obj);
-			printf("Get %d score and %d buff\n", revenue[0].score, revenue[0].bonus);
+			//printf("Get %d score and %d buff\n", revenue[0].score, revenue[0].bonus);
 			this->is_holding = false;
 
 			if (revenue[0].score != 0)
@@ -427,7 +431,7 @@ void Player::update(const sf::RenderTarget* target, std::vector<CraftingTable>& 
 		bonusTimer.restart();
 		bonusTime -= elapsedTime;
 
-		printf("Bonus time left : %f", bonusTime);
+		//printf("Bonus time left : %f", bonusTime);
 		// Check if the bonus time has expired
 		if (bonusTime <= 0.0f)
 		{
@@ -517,4 +521,30 @@ void Player::render(sf::RenderTarget* target)
 	target->draw(this->sprite);
 	target->draw(this->spriteHolding);
 	//target->draw(this->shape);
+
+	if (bonusTime > 0.f) {
+		sf::Vector2f playerPosition = this->sprite.getPosition();
+		sf::Vector2f holdingPosition = this->spriteHolding.getPosition();
+		speedSprite.setPosition(playerPosition.x, playerPosition.y + 84.f);
+		target->draw(speedSprite);
+
+		// Calculate the width of the rectBar based on timeLeft and craftingTime
+		float rectBarWidth = (bonusTime / 10.f) * 48.f;
+
+		// Create a rectangle shape
+		sf::RectangleShape rect;
+
+		// Set the size of the rectangle based on rectBarWidth
+		rect.setSize(sf::Vector2f(rectBarWidth, 10)); // Adjust the height as needed
+
+		// Set the position of the rectangle
+		rect.setPosition(sf::Vector2f(playerPosition.x + 24.f, playerPosition.y + 90.f)); // Adjust the Y position as needed
+
+		// Set the fill color of the rectangle (e.g., green)
+		rect.setFillColor(sf::Color::Cyan); // Adjust the color as needed
+
+		// Draw the rectangle
+		target->draw(rect);
+	}
+
 }
