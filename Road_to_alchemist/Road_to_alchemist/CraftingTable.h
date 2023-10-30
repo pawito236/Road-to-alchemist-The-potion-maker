@@ -43,6 +43,9 @@ private:
 	sf::Texture textureProductBorder;
 	sf::Sprite spriteProductBorder;
 
+	sf::Texture textureProductCraft;
+	sf::Sprite spriteProductCraft;
+
 	sf::Texture textureItem1;
 	sf::Sprite spriteItem1;
 	sf::Texture textureItem2;

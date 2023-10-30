@@ -77,7 +77,10 @@ void StoreManager::generateMenu(int reputation)
 
 	newMenu.maxWidthBar = 50.f;
 
-	newMenu.isHappy = true;
+	newMenu.isHappy = false;
+	newMenu.textureHappy.loadFromFile("image/smile.png");
+	newMenu.spriteHappy.setTexture(newMenu.textureHappy);
+	newMenu.spriteHappy.setScale(sf::Vector2f(0.04f, 0.04f));
 
 	sf::Clock clock;
 	newMenu.clock = clock;
@@ -124,7 +127,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		if (i.id == 0 && potion == 8)
 		{
 			revenueItem.bonus = i.bonus;
-			revenueItem.score = 20;
+			revenueItem.score = 20 + ((i.timeLeft / i.craftingTime) * 20);
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
@@ -138,7 +141,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		if (i.id == 1 && potion == 9)
 		{
 			revenueItem.bonus = i.bonus;
-			revenueItem.score = 25;
+			revenueItem.score = 20 + ((i.timeLeft / i.craftingTime) * 20);
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
@@ -151,7 +154,7 @@ std::vector<ListRevenue> StoreManager::placeMenu(int potion)
 		if (i.id == 2 && potion == 10)
 		{
 			revenueItem.bonus = i.bonus;
-			revenueItem.score = 30;
+			revenueItem.score = 20 + ((i.timeLeft / i.craftingTime) * 20);
 			//listMenu.erase(listMenu.begin() + idx);
 			i.receiveOrder = true;
 			i.y = 720.f;
@@ -227,9 +230,12 @@ void StoreManager::update(int reputation)
 		}
 
 		// Error - clock update but error -> customer won't leave
+
 		if (i.isHappy) {
 			elaspTime = elaspTime * 0.8f;
 		}
+
+
 		i.timeLeft = i.timeLeft - elaspTime;
 
 		if (i.timeLeft <= 0 && i.receiveOrder == false)
@@ -238,7 +244,7 @@ void StoreManager::update(int reputation)
 			i.receiveOrder = true;
 			i.isMoving = true;
 			i.y = 720.f;
-			penalty -= 10;
+			penalty -= 20;
 		}
 		
 		idx++;
@@ -375,9 +381,9 @@ void StoreManager::render(sf::RenderTarget& target)
 		target.draw(rect);
 
 		if (i.isHappy) {
-			i.textureHappy.loadFromFile("image/smile.png");
+			//i.textureHappy.loadFromFile("image/smile.png");
 			i.spriteHappy.setTexture(i.textureHappy);
-			i.spriteHappy.setScale(sf::Vector2f(0.04f, 0.04f));
+			//i.spriteHappy.setScale(sf::Vector2f(0.04f, 0.04f));
 			i.spriteHappy.setPosition(sf::Vector2f(i.currentX + i.offsetXProduct+32.f, i.currentY + i.offsetYProduct));
 			target.draw(i.spriteHappy);
 		}

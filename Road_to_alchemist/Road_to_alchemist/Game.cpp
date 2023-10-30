@@ -13,7 +13,7 @@ void Game::initVariable()
 	startTime = std::chrono::steady_clock::now();
 	elapsedTimeInSeconds = 0;
 	isTiming = true;
-	maxTime = 200;
+	maxTime = 300;
 
 }
 

@@ -93,6 +93,13 @@ void CraftingTable::initShape(float x, float y)
 		)
 	);
 
+	spriteProductCraft.setPosition(
+		sf::Vector2f(
+			x - 32.f,
+			y - 32.f
+		)
+	);
+
 }
 
 void CraftingTable::initVariable()
@@ -445,6 +452,36 @@ void CraftingTable::render(sf::RenderTarget& target)
 
 		this->spriteBar.setTextureRect(this->rectBar);
 
+		switch (this->temp_combination_id)
+		{
+		case 5:
+			
+			this->textureProductCraft.loadFromFile("image/T2_item_1.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+
+			break;
+		case 6:
+			this->textureProductCraft.loadFromFile("image/T2_item_2.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+			break;
+		case 7:
+			this->textureProductCraft.loadFromFile("image/T2_item_3.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+			break;
+		case 8:
+			this->textureProductCraft.loadFromFile("image/potion1.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+			break;
+		case 9:
+			this->textureProductCraft.loadFromFile("image/potion2.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+			break;
+		case 10:
+			this->textureProductCraft.loadFromFile("image/potion3.png");
+			this->spriteProductCraft.setTexture(this->textureProductCraft);
+			break;
+		}
+		target.draw(this->spriteProductCraft);
 	}
 	else
 	{
@@ -482,6 +519,8 @@ void CraftingTable::render(sf::RenderTarget& target)
 	
 	target.draw(this->spriteBarBG);
 	target.draw(this->spriteBar);
+
+	if(is_crafting) { target.draw(this->spriteProductCraft); }
 
 }
 
