@@ -72,6 +72,8 @@ private:
 	sf::Text timeText;
 	sf::Text taskText;
 
+	sf::Text enterText;
+
 	sf::Text playerName;
 	sf::String input;
 

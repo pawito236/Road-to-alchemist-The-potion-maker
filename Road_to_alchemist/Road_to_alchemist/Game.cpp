@@ -71,6 +71,12 @@ void Game::initText()
 	leaderboardText.setFillColor(sf::Color::Black);
 	leaderboardText.setCharacterSize(40);
 	leaderboardText.setPosition(250.f, 250.f);
+
+	enterText.setFont(font);
+	enterText.setFillColor(sf::Color::Black);
+	enterText.setCharacterSize(32);
+	enterText.setString("Press ENTER to continue ...");
+	enterText.setPosition(10.f, 675.f);
 }
 
 void Game::initMusic()
@@ -556,6 +562,7 @@ void Game::render()
 		this->window->draw(this->spriteMenu4);
 
 		this->window->draw(playerName);
+		//this->window->draw(enterText);
 
 		std::stringstream ss;
 		ss << "You Promoted to : ";
@@ -578,6 +585,7 @@ void Game::render()
 		}
 		ss << " Alchemist";
 		ss << "\nReputation Score : " << reputation;
+		ss << "\n\n(Press ENTER to continue ...)";
 		gradeText.setString(ss.str());
 		this->window->draw(gradeText);
 	}
